@@ -1,0 +1,44 @@
+version: '3'
+
+tasks:
+  build:
+    desc: Build the Go project
+    cmds:
+      - go build -o bin/main ./cmd/LexerGenerator.go
+
+  run:
+    desc: Run the Go project with input file and output path
+    deps: [build]
+    cmds:
+      - ./bin/main -f "{{.INPUTFILE}}" -o "{{.OUTPUTPATH}}"
+    vars:
+      INPUTFILE: "{{.INPUTFILE | required}}"
+      OUTPUTPATH: "{{.OUTPUTPATH | required}}"
+
+  testLex:
+    desc: Run the Go project with input file and output path
+    deps: [build]
+    cmds:
+      - ./bin/main -f "{{.INPUTFILE}}" -o ./cmd/Lexer/lexer.go
+      - go build -o bin/LexTest ./cmd/LexerGenerator.go 
+      - ./bin/LexText -f "{{.INPUTFILE}}"
+    vars:
+      INPUTFILE: "{{.INPUTFILE | required}}"
+
+  clean:
+    desc: Clean the build artifacts
+    cmds:
+      - rm -rf bin/
+      - go clean -cache -modcache -testcache -i
+
+  test:
+    desc: Run tests, optionally filtering by pattern
+    cmds:
+      - |
+        if [ -n "{{.PATTERN}}" ]; then
+          go test -v -run "{{.PATTERN}}" ./...
+        else
+          go test -v ./...
+        fi
+    vars:
+      PATTERN: "{{.PATTERN | default \"\"}}"
