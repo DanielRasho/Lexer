@@ -19,6 +19,21 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
 { 
     // ======= HEADER =======
     // The entire contents of this section will be COPIED to the BEGINING of the generated Lexer.go file
+    
+    
+        //  ------ TOKENS ID -----
+        // Definition of the possible token types the compiled lexer can output, this wil be later
+        // used for the action definition when a pattern is matched.
+
+        //  ** The order in which they are written also defines ITS PRIORITY. 
+        // If the lexer happens to recognize 2 possible token types for a lexeme it will take 
+        // the one with HIGHEST PRIORITY (decleared first here).
+
+        const (
+            LITERAL = iota
+            NUMBER
+            COND 
+        )
 }
 {
     // ====== NAMED PATTERNS =======
@@ -31,32 +46,24 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
     let DIGIT = [0-9]
     let ID = {LETTER}({LETTER}|{DIGIT})*  // ID is a combination of LETTER and DIGIT
     let NUMBER = {DIGIT}+  // A NUMBER consists of one or more DIGITS
+    let WS = {DIGIT}+  // A NUMBER consists of one or more DIGITS
 } 
-{
-    //  ===== TOKENS ID =======
-    // Definition of the possible token types the compiled lexer can output, this wil be later
-    // used for the action definition when a pattern is matched.
 
-    //  ** The order in which they are written also defines ITS PRIORITY. 
-    // If the lexer happens to recognize 2 possible token types for a lexeme it will take 
-    // the one with HIGHEST PRIORITY (decleared first here).
+// ======= RULES ========
+// Define how to react when certain patterns are matched.
+// All Rules are composed by a "pattern" and an "action".
+// The action, is ANY GO CODE that will be executed when the lexeme is recognized
+// - They may end with a return statement using any ID defined in the TOKENS ID section
+// - If there is not return statement, the Lexer wont yield any token when that pattern is matched.
+// - Use "{}" to refer to named patterns defined before
 
-    LITERAL
-    NUMBER
-    COND 
-}
-{
-    // ======= RULES ========
-    // Define how to react when certain patterns are matched.
-    // All Rules are composed by a "pattern" and an "action".
-    // The action, is ANY GO CODE that will be executed when the lexeme is recognized
-    // - They may end with a return statement using any ID defined in the TOKENS ID section
-    // - If there is not return statement, the Lexer wont yield any token when that pattern is matched.
-    // - Use "{}" to refer to named patterns defined before
+rule entrypoint = 
+    | {LETTER} {return LETTER}
+    | {DIGIT} {return DIGIT}
+    | {COND} {return DIGIT}
+    | ' ' {return WS}
+    | {LETTER} { return LITERAL }
 
-    {LETTER} { return LITERAL }
-    "if" { return COND }
-}
 {
     // ======== FOOTER =======
     // The entire contents of this section will be COPIED to the END of the generated Lexer.go file
