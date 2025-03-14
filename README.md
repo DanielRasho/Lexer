@@ -1,6 +1,17 @@
 <h1 align="center">YAAALex 🚀</h1>
 <h3 align="center">(Yet Another Another Another Lexer) </h3>
 
+# Tareas
+1. Leer el archivo Yaalex -> Andre Jo
+2. Parsear eso a un dfa -> Rayo
+3. Ajustar minimizacion para el nuevo tipo de automata  -> Andre Jo
+4. Escribir template del lexer -> Rayo
+5. Escribir metodos para rellenar la template -> Andre Jo
+6. Crear mains: 
+    - Crear main del generador -> Andre Jo
+    - Crear main de prueba para usar lexers generados -> Rayo
+    - Fuzz testing
+
 ## Getting Started 🎬
 
 ```bash
@@ -56,12 +67,11 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
 // - They may end with a return statement using any ID defined in the TOKENS ID section
 // - If there is not return statement, the Lexer wont yield any token when that pattern is matched.
 // - Use "{}" to refer to named patterns defined before
-
 rule entrypoint = 
-    | {LETTER} {return LETTER}
-    | {DIGIT} {return DIGIT}
-    | {COND} {return DIGIT}
-    | ' ' {return WS}
+    | {LETTER} {return LETTER}      // PRIORITY 0
+    | {DIGIT} {return DIGIT}        // PRIORITY 1
+    | {COND} {return DIGIT}         // PRIORITY 2
+    | ' ' {return WS}               // ...
     | {LETTER} { return LITERAL }
 
 {

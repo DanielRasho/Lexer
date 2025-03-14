@@ -42,6 +42,7 @@ func (fr *FileReader) NextChar(char *rune) bool {
 	return true
 }
 
+// IMPORTANT: dont forget to close the file once to ended reading it!
 func (fr *FileReader) Close() error {
 	return fr.file.Close()
 }

@@ -11,10 +11,6 @@ PIPELINE
 	| PULL FOOTER
 */
 
-type YALexReader struct {
-	FilePath string
-}
-
 type YALexDefinition struct {
 	Header string
 	Footer string
@@ -27,7 +23,7 @@ type YALexRule struct {
 	Action  string
 }
 
-func (y *YALexReader) Parse() (*YALexDefinition, error) {
+func Parse(filePath string) (*YALexDefinition, error) {
 	// Start reading file
 	// ...
 	// Close file
