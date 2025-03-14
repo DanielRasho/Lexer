@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// Define the flags
-	fileFlag := flag.String("f", "", "Input file path")
+	fileFlag := flag.String("f", "", "Yalex file path")
 	outputFlag := flag.String("o", "", "Output file path")
 
 	// Parse the command line flags
@@ -25,4 +25,7 @@ func main() {
 	fmt.Printf("Output file: %s\n", *outputFlag)
 
 	// CODE FOR GENERATING LEXER ...
+	// GET YalexDefinition
+	// GET AUTOMATA
+	// Write Lexer
 }
