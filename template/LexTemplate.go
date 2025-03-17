@@ -105,18 +105,12 @@ func (l *Lexer) GetNextToken() (Token, error) {
 		// 2. Read the next rune 
 		r, size, err := l.reader.ReadRune()
 		if err != nil {
-			// If unexpected error return
-			if err != io.EOF {
-				return Token{}, err
+			// return the last recognized lexeme
+			if lastTokenID != NO_LEXEME {
+				break
 			}
 			// If no lexeme hast been recognized after endint the file, the file has invalid lexemes.
-			if lastTokenID == NO_LEXEME {
-				line, columns, _ := l.getLineAndColumn(l.bytesRead)
-				return Token{}, &PatternNotFound{Line: line, Column: columns, Pattern: l.symbolBuffer.String()}
-			}
-
-			// Else return the last recognized lexeme
-			break
+			return Token{}, err
 		}
 
 		nextState, ok := currentState.transitions[string(r)]
@@ -153,6 +147,13 @@ func (l *Lexer) GetNextToken() (Token, error) {
 // getLineAndColumn takes an open file and an offset (in bytes),
 // and returns the line and column where that byte is located.
 func (l *Lexer) getLineAndColumn(offset int) (line, column int, err error) {
+
+	// Reset file position to the beginning (because the lexer reader moved the file cursor previously)
+	_, err = l.file.Seek(0, io.SeekStart)
+	if err != nil {
+		return 0, 0, err
+	}
+
 	// Create a buffered reader from the open file
 	reader := bufio.NewReader(l.file)
 
