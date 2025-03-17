@@ -36,10 +36,6 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
         // Definition of the possible token types the compiled lexer can output, this wil be later
         // used for the action definition when a pattern is matched.
 
-        //  ** The order in which they are written also defines ITS PRIORITY. 
-        // If the lexer happens to recognize 2 possible token types for a lexeme it will take 
-        // the one with HIGHEST PRIORITY (decleared first here).
-
         const (
             LITERAL = iota
             NUMBER
@@ -67,12 +63,18 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
 // - They may end with a return statement using any ID defined in the TOKENS ID section
 // - If there is not return statement, the Lexer wont yield any token when that pattern is matched.
 // - Use "{}" to refer to named patterns defined before
+
 rule entrypoint = 
     | {LETTER} {return LETTER}      // PRIORITY 0
     | {DIGIT} {return DIGIT}        // PRIORITY 1
     | {COND} {return DIGIT}         // PRIORITY 2
     | ' ' {return WS}               // ...
     | {LETTER} { return LITERAL }
+
+    // NOTE:
+    // The order in which they are written also defines ITS PRIORITY. 
+    // If the lexer happens to recognize 2 possible actions for a pattern it will take 
+    // the one with HIGHEST PRIORITY (declared first here).
 
 {
     // ======== FOOTER =======
