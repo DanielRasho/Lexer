@@ -22,10 +22,3 @@ type YALexRule struct {
 	Pattern string
 	Action  string
 }
-
-func Parse(filePath string) (*YALexDefinition, error) {
-	// Start reading file
-	// ...
-	// Close file
-	return nil, nil
-}
