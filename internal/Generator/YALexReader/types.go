@@ -14,7 +14,6 @@ PIPELINE
 type YALexDefinition struct {
 	Header string
 	Footer string
-	Tokens []string
 	Rules  []YALexRule
 }
 

@@ -12,13 +12,11 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	var line string
 
 	readinghead := false
-	readingbody := false
 	readingrules := false
 	readingfooter := false
 
 	var Header string
 	var Footer string
-	Tokens := make([]string, 0)
 	Rules := make([]string, 0)
 	YalRules := make([]YALexRule, 0)
 
@@ -30,17 +28,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 
 			if line == "%}\n" {
 				readinghead = false
-			}
-		}
-
-		//BODY HIELD
-		//Patterns
-		if line == "{\n" || readingbody {
-			readingbody = true
-			Tokens = append(Tokens, line)
-
-			if line == "}\n" {
-				readingbody = false
 			}
 		}
 
@@ -66,18 +53,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 
 	}
 
-	Tokens_toAdd := make([]string, 0)
-	Tokens = Tokens[1 : len(Tokens)-1]
-	for i := range len(Tokens) {
-		Tokens[i] = strings.TrimSpace(strings.Split(Tokens[i], "//")[0])
-		Tokens[i] = strings.TrimSpace(strings.Split(Tokens[i], "\n")[0])
-
-		if Tokens[i] != "    " {
-			Tokens_toAdd = append(Tokens_toAdd, Tokens[i])
-		}
-
-	}
-
 	Rules = Rules[1 : len(Rules)-1]
 	for i := range len(Rules) {
 		if strings.TrimSpace(Rules[i]) != "" {
@@ -96,7 +71,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	yalexdef := YALexDefinition{
 		Header: Header,
 		Footer: Footer,
-		Tokens: Tokens,
 		Rules:  YalRules,
 	}
 

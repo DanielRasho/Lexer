@@ -18,11 +18,6 @@ func Test_check_DFA(t *testing.T) {
 	println("\nHeader\n")
 	fmt.Println(Yalexdef.Header)
 
-	println("\nTokens\n")
-	for i := range len(Yalexdef.Tokens) {
-		fmt.Println(Yalexdef.Tokens[i])
-	}
-
 	println("\nRules\n")
 	for i := range len(Yalexdef.Rules) {
 		fmt.Println(Yalexdef.Rules[i].Action)
