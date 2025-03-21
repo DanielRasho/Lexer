@@ -21,7 +21,7 @@ func Test_check(t *testing.T) {
 
 	lextemp := CreateLexTemplateComponentes(yal, adf)
 
-	Fill("../../../template/LexTemplate.go", lextemp)
+	FillwithTemplate("../../../template/LexTemplate.go", lextemp)
 
 }
 
@@ -32,8 +32,8 @@ func initializeSimpleDFA() dfa.DFA {
 		Id:      "0",
 		IsFinal: false,
 		Actions: []dfa.Action{
-			{Code: "func() int { return LITERAL}", Priority: 0},   // Direct initialization of action1
-			{Code: "func() int { return NO_LEXEME}", Priority: 1}, // Direct initialization of action2
+			{Code: "func() int { return LITERAL}  ", Priority: 0},    // Direct initialization of action1
+			{Code: "func() int { return NO_LEXEME}   ", Priority: 1}, // Direct initialization of action2
 		},
 		Transitions: make(map[dfa.Symbol]*dfa.State),
 	}

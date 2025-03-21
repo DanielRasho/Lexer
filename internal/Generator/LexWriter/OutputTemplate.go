@@ -17,6 +17,7 @@ import (
 
 
 
+
 // =====================
 //	  Lexer
 // =====================
@@ -226,27 +227,31 @@ type action func() int
 
 // createDFA constructs the DFA that recognizes the user language.
 func createDFA() *dfa {
-state0 := &state{id: "0" , 
+	state0 := &state{id: "0" , 
 Actions: []action{ 
- func() int { return LITERAL} , 
- func() int { return NO_LEXEME} , 
+ func() int { return LITERAL
+return SKIP_LEXEME } , 
+ func() int { return NO_LEXEME
+return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
 state1 := &state{id: "1" , transitions: make(map[Symbol]*state), isFinal: true}
 
 state0.transitions["a"] = state0
 state0.transitions["b"] = state1
-state1.transitions["b"] = state1
 state1.transitions["a"] = state1
+state1.transitions["b"] = state1
 
 return &dfa{ 
 startState: state0,
 states: []*state{ state0, state1}, 
-}}
+}
+}
 
 // =====================
 //	Footer
 // =====================
 // Contains the exact same content defined on the Yaaalex file
 //Footings
+
 
 

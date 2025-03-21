@@ -2,9 +2,10 @@ package Lex_writer
 
 import (
 	"fmt"
-	"strings"
-
+	"os"
 	"strconv"
+	"strings"
+	"text/template"
 
 	dfa "github.com/DanielRasho/Lexer/internal/DFA"
 	yalexDef "github.com/DanielRasho/Lexer/internal/Generator/YALexReader"
@@ -35,7 +36,11 @@ func CreateLexTemplateComponentes(yal yalexDef.YALexDefinition, adf dfa.DFA) Lex
 
 			//For each action add it in the declared actions,
 			for e := range len(slice) {
-				actions = actions + " " + slice[e].Code + " , \n"
+
+				codigo := strings.TrimSpace(slice[e].Code)
+				codigo = codigo[:len(codigo)-1]
+
+				actions = actions + " " + codigo + "\nreturn SKIP_LEXEME } , \n"
 			}
 
 			//Once added actions we can create the state with id state0
@@ -126,4 +131,38 @@ func Fill(filePath string, lextemp LexTemplate) {
 		return
 	}
 	fmt.Println(wholefile)
+}
+
+func FillwithTemplate(filePath string, lextemp LexTemplate) {
+
+	var content string
+	var line string
+	filereader, _ := io.ReadFile(filePath)
+
+	//Para cada linea se va a agregar al wholefile que es para agregar todo el contenido al archivo Go
+	for filereader.NextLine(&line) {
+		content = content + line
+	}
+
+	fmt.Println(content)
+
+	tmpl, err := template.New("fileTemplate").Parse(content)
+	if err != nil {
+		fmt.Println("Error parsing template:", err)
+		return
+	}
+
+	outputFile, err := os.Create("OutputTemplate.go")
+	if err != nil {
+		fmt.Println("Error creating output file:", err)
+		return
+	}
+	defer outputFile.Close()
+
+	err = tmpl.Execute(outputFile, lextemp)
+	if err != nil {
+		fmt.Println("Error executing template:", err)
+		return
+	}
+
 }
