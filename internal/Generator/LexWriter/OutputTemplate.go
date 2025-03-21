@@ -228,8 +228,8 @@ type action func() int
 func createDFA() *dfa {
 state0 := &state{id: "0" , 
 Actions: []action{ 
- action1 , 
- action2 , 
+ func() int { return LITERAL} , 
+ func() int { return NO_LEXEME} , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
 state1 := &state{id: "1" , transitions: make(map[Symbol]*state), isFinal: true}
 
