@@ -46,3 +46,25 @@ func (fr *FileReader) NextChar(char *rune) bool {
 func (fr *FileReader) Close() error {
 	return fr.file.Close()
 }
+
+func WriteToFile(path string, content string) error {
+	// Open or create a file for writing
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Create a buffered writer
+	writer := bufio.NewWriter(file)
+
+	// Write the content to the file
+	_, err = writer.WriteString(content)
+	if err != nil {
+		return err
+	}
+
+	// Make sure all content is flushed to the file
+	writer.Flush()
+	return nil
+}

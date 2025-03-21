@@ -13,7 +13,9 @@ import (
 // Contains the exact same content defined on the Yaaalex file
 // Tokens IDs should be defined here.
 
-{{ .Header }}
+//Heading
+
+
 
 // =====================
 //	  Lexer
@@ -224,11 +226,27 @@ type action func() int
 
 // createDFA constructs the DFA that recognizes the user language.
 func createDFA() *dfa {
-	{{ .Automata }}
-}
+state0 := &state{id: "0" , 
+Actions: []action{ 
+ action1 , 
+ action2 , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state1 := &state{id: "1" , transitions: make(map[Symbol]*state), isFinal: true}
+
+state0.transitions["a"] = state0
+state0.transitions["b"] = state1
+state1.transitions["b"] = state1
+state1.transitions["a"] = state1
+
+return &dfa{ 
+startState: state0,
+states: []*state{ state0, state1}, 
+}}
 
 // =====================
 //	Footer
 // =====================
 // Contains the exact same content defined on the Yaaalex file
-{{ .Footer }}
+//Footings
+
+
