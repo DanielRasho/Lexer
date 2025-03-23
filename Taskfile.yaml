@@ -4,7 +4,7 @@ tasks:
   build:
     desc: Build the Go project
     cmds:
-      - go build -o bin/main ./cmd/LexerGenerator.go
+      - go build -o bin/main ./cmd/LexerGenerator/LexerGenerator.go
 
   run:
     desc: Run the lexer generator
@@ -12,18 +12,18 @@ tasks:
     cmds:
       - ./bin/main -f "{{.INPUTFILE}}" -o "{{.OUTPUTPATH}}"
     vars:
-      INPUTFILE: "{{.INPUTFILE | required}}"
-      OUTPUTPATH: "{{.OUTPUTPATH | required}}"
+      INPUTFILE: "{{.INPUTFILE}}"
+      OUTPUTPATH: "{{.OUTPUTPATH}}"
 
   testLex:
     desc: Run the Go project with input file and output path
     deps: [build]
     cmds:
       - ./bin/main -f "{{.INPUTFILE}}" -o ./cmd/Lexer/lexer.go
-      - go build -o bin/LexTest ./cmd/Lexer/LexerGenerator.go 
+      - go build -o bin/LexTest ./cmd/Lexer/main.go 
       - ./bin/LexText -f "{{.INPUTFILE}}" 
     vars:
-      INPUTFILE: "{{.INPUTFILE | required}}"
+      INPUTFILE: "{{.INPUTFILE}}"
 
   clean:
     desc: Clean the build artifacts
