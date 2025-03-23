@@ -14,19 +14,17 @@
 // ====== NAMED PATTERNS =======
 {
     // Define named patterns using regular expressions
-    LETTER   [a-zA-Z]
-    DIGIT    [0-9]
+    LETTER   abc
+    DIGIT    1234
     ID       {LETTER}({LETTER}|{DIGIT})*  // ID consists of letters and digits
     NUMBER   {DIGIT}+  // NUMBER consists of one or more digits
-    WS       [ \t\n\r]+  // Whitespace: spaces, tabs, newlines, or carriage returns
-    COND     (if|else|while)  // Keywords like 'if', 'else', 'while'
+    WS       ([ \t\n\r])+  // Whitespace: spaces, tabs, newlines, or carriage returns
 }
 
 // ======= RULES ========
 %%
 {LETTER}         { return LITERAL }   // Match letters and return LITERAL
 {DIGIT}          { return NUMBER }    // Match digits and return NUMBER
-{COND}           { return COND }      // Match conditional keywords and return COND
 {WS}             { return WS }        // Match whitespace and return WS
 {ID}             { return LITERAL }   // Match identifiers and return LITERAL
 
