@@ -24,9 +24,11 @@ func RegexToPostfix(tokens []RawSymbol) (string, []Symbol, error) {
 	if err != nil {
 		return "", nil, err
 	}
+	primitiveExpresion = nil
 
 	// Reorder expresion in postfix notation
 	postfixSymbols := shuntingyard(expresionPrepared)
+	expresionPrepared = nil
 	var sb strings.Builder
 	for _, token := range postfixSymbols {
 		sb.WriteString(token.Value)
@@ -49,7 +51,6 @@ func shuntingyard(tokens []Symbol) []Symbol {
 				if tokenValue.Value == "(" && token.IsOperator {
 					break
 				}
-
 				postfix = append(postfix, stack.Pop().(Symbol))
 			}
 			stack.Pop()
