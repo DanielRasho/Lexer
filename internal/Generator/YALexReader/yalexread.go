@@ -1,7 +1,6 @@
 package yalex_reader
 
 import (
-	"fmt"
 	"strings"
 
 	io "github.com/DanielRasho/Lexer/internal/IO"
@@ -90,8 +89,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 				value := strings.SplitAfterN(Tokens[i], " ", 2)[1]
 				value = strings.TrimSpace(value)
 				for i, valor := range hashtokens {
-					fmt.Println(i)
-					fmt.Println(valor)
 					value = strings.ReplaceAll(value, i, valor)
 
 				}
@@ -120,8 +117,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	}
 
 	filereader.Close()
-
-	fmt.Println(Tokens)
 
 	yalexdef := YALexDefinition{
 		Header: Header,
