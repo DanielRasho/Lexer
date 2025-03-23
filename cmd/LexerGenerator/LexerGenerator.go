@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	generator "github.com/DanielRasho/Lexer/internal/Generator"
 )
 
 func main() {
@@ -25,7 +27,5 @@ func main() {
 	fmt.Printf("Output file: %s\n", *outputFlag)
 
 	// CODE FOR GENERATING LEXER ...
-	// GET YalexDefinition
-	// GET AUTOMATA
-	// Write Lexer
+	generator.Compile(*fileFlag, *outputFlag)
 }
