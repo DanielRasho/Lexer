@@ -38,11 +38,16 @@ func Compile(filePath, outputPath string) error {
 
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: "("})
 		for _, r := range rule.Pattern {
-			rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: string(r), ActionPriority: -1})
+			rawExpresion = append(rawExpresion, postfix.RawSymbol{
+				Value:  string(r),
+				Action: postfix.Action{Priority: -1}})
 		}
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: ")"})
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{
-			Value: strconv.Itoa(index + startIndex), ActionPriority: index, Action: rule.Action})
+			Value: strconv.Itoa(index + startIndex),
+			Action: postfix.Action{
+				Priority: index,
+				Code:     rule.Action}})
 
 		if index != len(yalexDefinition.Rules)-1 {
 			rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: "|"})
