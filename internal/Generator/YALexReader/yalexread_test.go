@@ -10,7 +10,7 @@ import (
 // Se inicializa la tabla y se revisa si el mapa tiene un estado y verificar si ese estado es final
 func Test_check_DFA(t *testing.T) {
 
-	Yalexdef, _ := Parse("example.lex")
+	Yalexdef, _ := Parse("../../../examples/example.lex")
 
 	println("\nFooter\n")
 	fmt.Println(Yalexdef.Footer)

@@ -125,7 +125,7 @@ func Fill(filePath string, lextemp LexTemplate) {
 
 	filereader.Close() //Lo Cerramos y utilizamos la otra funcion para escribir el archivo con el contenido ya agregado
 
-	err := io.WriteToFile("OutputTemplate.go", wholefile)
+	err := io.WriteToFile("../../../examples/OutputTemplate.go", wholefile)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
 		return
