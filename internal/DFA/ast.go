@@ -28,6 +28,7 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 			operandCount := symbol.Operands
 			if len(stack) < operandCount {
 				//log.Panic().Msg("Expresión postfix inválida: falta operando")
+				panic("Expresión postfix inválida: falta operando")
 			}
 
 			// Añadir los símbolos que necesita el operador a operands
@@ -62,7 +63,10 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 				node := Node{
 					Id:         i,
 					Value:      symbol.Value,
-					IsOperator: false}
+					IsOperator: false,
+					HasAction:  symbol.HasAction,
+					Action:     symbol.Action,
+				}
 				stack = append(stack, node)
 			}
 		}
@@ -70,6 +74,7 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 
 	if len(stack) != 1 {
 		//log.Panic().Msg("Expresión postfix inválida: el resultado final no es un solo nodo")
+		panic("Expresión postfix inválida: falta operando")
 	}
 	return stack[0]
 }

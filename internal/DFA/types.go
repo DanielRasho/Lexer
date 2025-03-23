@@ -25,11 +25,6 @@ type Action struct {
 	Priority int
 }
 
-// Rayo
-func NewDFA() *DFA {
-	return nil
-}
-
 // =====================
 // ABSTRACT SYNTAX TREE
 // =====================
@@ -49,6 +44,10 @@ type Node struct {
 	// Reserved for centinel character that marks the end of the parsing.
 	// Just one node in the entire tree can have it.
 	IsFinal bool
+	// If this symbol holds action data
+	HasAction bool
+	// action code as a string
+	Action string
 }
 
 func (n Node) String() string {
