@@ -38,11 +38,11 @@ func Compile(filePath, outputPath string) error {
 
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: "("})
 		for _, r := range rule.Pattern {
-			rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: string(r)})
+			rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: string(r), ActionPriority: -1})
 		}
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: ")"})
 		rawExpresion = append(rawExpresion, postfix.RawSymbol{
-			Value: strconv.Itoa(index + startIndex), HasAction: true, Action: rule.Action})
+			Value: strconv.Itoa(index + startIndex), ActionPriority: index, Action: rule.Action})
 
 		if index != len(yalexDefinition.Rules)-1 {
 			rawExpresion = append(rawExpresion, postfix.RawSymbol{Value: "|"})
@@ -50,12 +50,11 @@ func Compile(filePath, outputPath string) error {
 
 	}
 
-	for _, v := range rawExpresion {
-		fmt.Print(v.Value)
-	}
-
 	// Generate DFA for language recognition
-	dfa.NewDFA(rawExpresion)
+	_, err = dfa.NewDFA(rawExpresion)
+	if err != nil {
+		return err
+	}
 
 	// Simplify
 

@@ -14,8 +14,8 @@ Panic:
  1. Si la expresión postfix es inválida, no está balanceada o en el stack hay menos símbolos de los que necesita un operador.
  2. Resultado del stack final no es un solo nodo (tal que la cantidad de operadores relacionados es incorrecta y faltan o sobran símbolos).
 */
-func BuildAST(postfixSymbols []postfix.Symbol) Node {
-	var stack []Node
+func BuildAST(postfixSymbols []postfix.Symbol) node {
+	var stack []node
 
 	// Recorrer toda la lista de símbolos en notación postfix
 	for i, symbol := range postfixSymbols {
@@ -32,7 +32,7 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 			}
 
 			// Añadir los símbolos que necesita el operador a operands
-			operands := make([]Node, operandCount)
+			operands := make([]node, operandCount)
 			for i := range operands {
 				operands[i] = stack[len(stack)-1] // Agregar el valor a operands
 				stack = stack[:len(stack)-1]      // Eliminar ese operando del stack
@@ -43,7 +43,7 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 				operands[i], operands[j] = operands[j], operands[i]
 			}
 			// Crear un nodo operador con los operandos
-			node := Node{
+			node := node{
 				Id:         -i,
 				Value:      symbol.Value,
 				Operands:   symbol.Operands,
@@ -54,18 +54,18 @@ func BuildAST(postfixSymbols []postfix.Symbol) Node {
 		} else {
 			// Si no es un operador, es un carácter (Symbol) y se añade al stack
 			if symbol.Value == "ε" {
-				node := Node{
+				node := node{
 					Id:         -1, // stands for leaf that must not be taken into account
 					Value:      symbol.Value,
 					IsOperator: false}
 				stack = append(stack, node)
 			} else {
-				node := Node{
-					Id:         i,
-					Value:      symbol.Value,
-					IsOperator: false,
-					HasAction:  symbol.HasAction,
-					Action:     symbol.Action,
+				node := node{
+					Id:             i,
+					Value:          symbol.Value,
+					IsOperator:     false,
+					ActionPriority: symbol.ActionPriority,
+					Action:         symbol.Action,
 				}
 				stack = append(stack, node)
 			}

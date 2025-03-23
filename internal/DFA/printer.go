@@ -9,14 +9,14 @@ import (
 )
 
 // GenerateDOT generates the DOT representation of the AST
-func GenerateDOT(root Node) string {
+func GenerateDOT(root node) string {
 	var buf bytes.Buffer
 	buf.WriteString("digraph AST {\n")
 
-	var addNode func(Node, string) string
+	var addNode func(node, string) string
 	nodeCount := 0
 
-	addNode = func(n Node, parentID string) string {
+	addNode = func(n node, parentID string) string {
 		nodeID := fmt.Sprintf("node%d", nodeCount)
 		nodeCount++
 		nodeLabel := strings.ReplaceAll(n.Value, "\"", "\\\"")
@@ -51,7 +51,7 @@ func GenerateImage(dot string, outputPath string) error {
 }
 
 // GenerateDOTFromRoot creates a DOT graph from a root Node and saves it as an image
-func GenerateImageFromRoot(root Node, outputPath string) error {
+func GenerateImageFromRoot(root node, outputPath string) error {
 	// Generate the DOT representation
 	dot := GenerateDOT(root)
 
