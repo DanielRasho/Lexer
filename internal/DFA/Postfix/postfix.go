@@ -9,7 +9,7 @@ import (
 // Converts a regex string to a slice of symbols in postfix
 //
 // NOTE: Asummes the expresion is balanced in open-close symbols like "()", "[]"
-func RegexToPostfix(tokens string) (string, []Symbol, error) {
+func RegexToPostfix(tokens []RawSymbol) (string, []Symbol, error) {
 
 	// Convert tokens to Symbols, taking into account escaped symbols.
 	symbols, err := convertToSymbols(tokens)
@@ -66,9 +66,6 @@ func shuntingyard(tokens []Symbol) []Symbol {
 			stack.Push(token)
 		}
 
-		// log.Debug().Msg(fmt.Sprintf("\t=== STEP %d ====\n", i))
-		// log.Debug().Msg(fmt.Sprintf("\t\tStack: %+v \n", (tokens)[0:i+1]))
-		// log.Debug().Msg(fmt.Sprintf("\t\tResponse: %+v \n", postfix))
 	}
 
 	for stack.Len() > 0 {

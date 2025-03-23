@@ -1,5 +1,14 @@
 package postfix
 
+// Contains raw data of a symbol/rune, acts like as a an analugous of the rune type
+// but containing action data, for special processing.
+type RawSymbol struct {
+	Value     string
+	HasAction bool
+	Action    string
+}
+
+// Representation of a string that can be used for processing regex patterns.
 type Symbol struct {
 	// Raw character
 	Value string
@@ -7,6 +16,12 @@ type Symbol struct {
 	Precedence int
 	// If the symbol its an operator
 	IsOperator bool
+
+	// If this symbol holds action data
+	HasAction bool
+	// action code as a string
+	Action string
+
 	// Number of Operands
 	Operands int
 }

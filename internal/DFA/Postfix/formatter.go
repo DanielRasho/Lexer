@@ -1,23 +1,20 @@
 package postfix
 
-import "strings"
-
 // This file contains logic specifically to manipulating a list of symbols
 // or strings
 
-// Convert a string to a list of symbols, supports escaped characters.
-func convertToSymbols(expresion string) ([]Symbol, error) {
-	tokens := strings.Split(expresion, "")
-	symbols := make([]Symbol, 0)
+// Convert a sequence of raw symbols to a list of symbols, supports escaped characters.
+func convertToSymbols(expresion []RawSymbol) ([]Symbol, error) {
+	finalSymbols := make([]Symbol, 0)
 
-	for i := 0; i < len(tokens); {
-		t1, _ := getTokenInfo(tokens, i)
-		t2, t2Exist := getTokenInfo(tokens, i+1)
+	for i := 0; i < len(expresion); {
+		t1, _ := getRawSymbolInfo(expresion, i)
+		t2, t2Exist := getRawSymbolInfo(expresion, i+1)
 
-		if t1 == ESCAPE_SYMBOL {
+		if t1.Value == ESCAPE_SYMBOL {
 			if t2Exist {
-				symbols = append(symbols, Symbol{
-					Value:      t2,
+				finalSymbols = append(finalSymbols, Symbol{
+					Value:      t2.Value,
 					Precedence: 60,
 					IsOperator: false})
 
@@ -25,19 +22,21 @@ func convertToSymbols(expresion string) ([]Symbol, error) {
 				continue
 			}
 		}
-		if operator, isOperator := OPERATORS[t1]; isOperator {
-			symbols = append(symbols, operator)
+		if operator, isOperator := OPERATORS[t1.Value]; isOperator {
+			finalSymbols = append(finalSymbols, operator)
 		} else {
-			symbols = append(symbols, Symbol{
-				Value:      t1,
+			finalSymbols = append(finalSymbols, Symbol{
+				Value:      t1.Value,
 				Precedence: 60,
 				IsOperator: false,
+				HasAction:  t1.HasAction,
+				Action:     t1.Action,
 			})
 		}
 		i++
 	}
 
-	return symbols, nil
+	return finalSymbols, nil
 }
 
 // Add concatenation symbol to an expresion.
@@ -105,13 +104,13 @@ func shouldAddConcatenationSymbol(s1, s2 Symbol) bool {
 			return false
 		}
 	}
-	// 	If S2 is an "(" operator
+	// 	If S2 is an "(" or "[" operator
 	if s2.IsOperator &&
 		((s2.Value == "(") ||
 			(s2.Value == "[")) {
 		return true
 	}
-	if s2.IsOperator { // If c1 is not operand then
+	if s2.IsOperator { // If s2 is not operand then
 		return false
 	}
 
@@ -119,9 +118,9 @@ func shouldAddConcatenationSymbol(s1, s2 Symbol) bool {
 }
 
 // Returns a token (string) from a given index. For invalid index return empty string and false.
-func getTokenInfo(symbols []string, index int) (s string, exist bool) {
+func getRawSymbolInfo(symbols []RawSymbol, index int) (s RawSymbol, exist bool) {
 	if index >= len(symbols) {
-		s = ""
+		s = RawSymbol{}
 		exist = false
 		return
 	}

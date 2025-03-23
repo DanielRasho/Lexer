@@ -11,6 +11,7 @@ import (
 func convertToPrimitiveOperators(expresion []Symbol) []Symbol {
 
 	formattedSymbols := make([]Symbol, 0)
+	// formattedSymbols := make([]Symbol, 0, len(expresion))
 
 	for i := len(expresion) - 1; i >= 0; {
 		s1, _ := getSymbolInfo(expresion, i)
