@@ -17,18 +17,6 @@
         config.allowUnfree = true;
         });
       
-      # createApp = system: name: buildDeps:
-      # let 
-      #   pkgs = nixpkgsFor.${system};
-      # in
-      #   pkgs.writeShellApplication {
-      #     name = name;
-      #     runtimeInputs = builtins.map (pkg: pkgs.${pkg}) buildDeps;
-      #     text = ''
-      #       make run APP=${name}
-      #     '';
-      # };
-
     in 
     {
       devShells = forAllSystems ( system: 
