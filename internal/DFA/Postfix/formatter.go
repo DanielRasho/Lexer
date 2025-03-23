@@ -5,7 +5,7 @@ package postfix
 
 // Convert a sequence of raw symbols to a list of symbols, supports escaped characters.
 func convertToSymbols(expresion []RawSymbol) ([]Symbol, error) {
-	finalSymbols := make([]Symbol, 0)
+	finalSymbols := make([]Symbol, 0, len(expresion))
 
 	for i := 0; i < len(expresion); {
 		t1, _ := getRawSymbolInfo(expresion, i)
@@ -42,7 +42,7 @@ func convertToSymbols(expresion []RawSymbol) ([]Symbol, error) {
 // Add concatenation symbol to an expresion.
 func addConcatenationSymbols(expresion []Symbol) ([]Symbol, error) {
 
-	formattedTokens := make([]Symbol, 0)
+	formattedTokens := make([]Symbol, 0, len(expresion))
 
 	for i := 0; i < len(expresion); {
 		s1, _ := getSymbolInfo(expresion, i)

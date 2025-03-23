@@ -38,7 +38,7 @@ func RegexToPostfix(tokens []RawSymbol) (string, []Symbol, error) {
 }
 
 func shuntingyard(tokens []Symbol) []Symbol {
-	postfix := make([]Symbol, 0)
+	postfix := make([]Symbol, 0, len(tokens))
 	stack := stack.New()
 
 	for _, token := range tokens {
