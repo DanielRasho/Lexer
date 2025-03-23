@@ -61,11 +61,13 @@ func BuildAST(postfixSymbols []postfix.Symbol) node {
 				stack = append(stack, node)
 			} else {
 				node := node{
-					Id:             i,
-					Value:          symbol.Value,
-					IsOperator:     false,
-					ActionPriority: symbol.ActionPriority,
-					Action:         symbol.Action,
+					Id:         i,
+					Value:      symbol.Value,
+					IsOperator: false,
+					Action: Action{
+						Priority: symbol.Action.Priority,
+						Code:     symbol.Action.Code,
+					},
 				}
 				stack = append(stack, node)
 			}

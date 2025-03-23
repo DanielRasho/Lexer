@@ -25,12 +25,33 @@ type Action struct {
 	Priority int
 }
 
+// Table for storing lastpost, first post and follow post for each node in the tree.
+type positionTableRow struct {
+	token     string
+	nullable  bool
+	isFinal   bool
+	firstPos  []int
+	lastPos   []int
+	followPos []int
+	action    Action
+}
+
+// FIXME:
+// Representation of Node with transition
+type nodeSet struct {
+	id          int
+	value       []int
+	transitions map[string]*nodeSet
+	isFinal     bool
+	actions     []Action
+}
+
 // =====================
 // ABSTRACT SYNTAX TREE
 // =====================
 
 // Definition of a tree node
-type Node struct {
+type node struct {
 	Id       int
 	Nullable bool
 	// Character itself this node represents
@@ -40,21 +61,19 @@ type Node struct {
 	// If is operator, how many operands needs
 	Operands int
 	// Insert Children
-	Children []Node
+	Children []node
 	// Reserved for centinel character that marks the end of the parsing.
 	// Just one node in the entire tree can have it.
 	IsFinal bool
-	// If this symbol holds action data
-	HasAction bool
-	// action code as a string
-	Action string
+	// For special Symbols encapsulate logic to execute when a pattern is meet
+	Action Action
 }
 
-func (n Node) String() string {
+func (n node) String() string {
 	return n.stringHelper(0)
 }
 
-func (n Node) stringHelper(depth int) string {
+func (n node) stringHelper(depth int) string {
 	tabs := ""
 	for i := 0; i < depth; i++ {
 		tabs += "\t"

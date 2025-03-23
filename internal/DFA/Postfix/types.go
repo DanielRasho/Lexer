@@ -1,11 +1,15 @@
 package postfix
 
+type Action struct {
+	Priority int // -1 if token does not have an action
+	Code     string
+}
+
 // Contains raw data of a symbol/rune, acts like as a an analugous of the rune type
 // but containing action data, for special processing.
 type RawSymbol struct {
-	Value          string
-	ActionPriority int // -1 if token does not have an action
-	Action         string
+	Value  string
+	Action Action
 }
 
 // Representation of a string that can be used for processing regex patterns.
@@ -17,10 +21,8 @@ type Symbol struct {
 	// If the symbol its an operator
 	IsOperator bool
 
-	// -1 if token does not have an action
-	ActionPriority int
-	// action code as a string
-	Action string
+	// For special Symbols encapsulate logic to execute when a pattern is meet
+	Action Action
 
 	// Number of Operands
 	Operands int
