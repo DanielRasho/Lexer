@@ -62,6 +62,32 @@ func printStateSetTable(states []*nodeSet, transitionTokens []string) {
 	}
 }
 
+func PrintDFA(dfa *DFA) {
+	fmt.Println("DFA Representation:")
+	fmt.Println("===================")
+	fmt.Printf("Start State: %s\n\n", dfa.StartState.Id)
+
+	for _, state := range dfa.States {
+		fmt.Printf("State: %s\n", state.Id)
+		if state.IsFinal {
+			fmt.Println("  [Final State]")
+		}
+		if len(state.Actions) > 0 {
+			fmt.Println("  Actions:")
+			for _, action := range state.Actions {
+				fmt.Printf("    - Code: %s (Priority: %d)\n", action.Code, action.Priority)
+			}
+		}
+		if len(state.Transitions) > 0 {
+			fmt.Println("  Transitions:")
+			for symbol, target := range state.Transitions {
+				fmt.Printf("    - %s -> %s\n", symbol, target.Id)
+			}
+		}
+		fmt.Println(strings.Repeat("-", 25))
+	}
+}
+
 // GenerateDOTFromRoot creates a DOT graph from a root Node and saves it as an image
 func RenderAST(root node, outputPath string) error {
 	// Generate the DOT representation

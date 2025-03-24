@@ -19,7 +19,7 @@ func Test_check(t *testing.T) {
 
 	adf := initializeSimpleDFA()
 
-	lextemp := CreateLexTemplateComponentes(yal, adf)
+	lextemp := CreateLexTemplateComponentes(&yal, &adf)
 
 	FillwithTemplate("../../../template/LexTemplate.go", lextemp)
 

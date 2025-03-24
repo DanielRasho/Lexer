@@ -7,6 +7,7 @@ import (
 	dfa "github.com/DanielRasho/Lexer/internal/DFA"
 	balancer "github.com/DanielRasho/Lexer/internal/DFA/Balancer"
 	postfix "github.com/DanielRasho/Lexer/internal/DFA/Postfix"
+	Lex_writer "github.com/DanielRasho/Lexer/internal/Generator/LexWriter"
 	yalex_reader "github.com/DanielRasho/Lexer/internal/Generator/YALexReader"
 )
 
@@ -61,11 +62,12 @@ func Compile(filePath, outputPath string) error {
 		return err
 	}
 
+	dfa.PrintDFA(automata)
+
 	dfa.RenderDFA(automata, "./diagram/automata.png")
 
-	// Simplify
-
-	// Write output to file
+	lextemp := Lex_writer.CreateLexTemplateComponentes(yalexDefinition, automata)
+	Lex_writer.FillwithTemplate("./template/LexTemplate.go", lextemp)
 
 	return nil
 }

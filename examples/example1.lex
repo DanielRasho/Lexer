@@ -14,8 +14,8 @@
 // ====== NAMED PATTERNS =======
 {
     // Define named patterns using regular expressions
-    LETTER   abc
-    DIGIT    1234
+    LETTER   a
+    DIGIT    b
     ID       {LETTER}({LETTER}|{DIGIT})*  // ID consists of letters and digits
     NUMBER   {DIGIT}+  // NUMBER consists of one or more digits
     WS       ([ \t\n\r])+  // Whitespace: spaces, tabs, newlines, or carriage returns
@@ -25,7 +25,5 @@
 %%
 {LETTER}         { return LITERAL }   // Match letters and return LITERAL
 {DIGIT}          { return NUMBER }    // Match digits and return NUMBER
-{WS}             { return WS }        // Match whitespace and return WS
-{ID}             { return LITERAL }   // Match identifiers and return LITERAL
 
 %%
