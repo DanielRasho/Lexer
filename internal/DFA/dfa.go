@@ -323,7 +323,6 @@ func getNewNodeSetForToken(items []int, token string, positionTable map[int]posi
 			break
 		}
 	}
-	SortActionsByPriority(actions)
 
 	return nodeSet{
 		value:       removeDuplicates(setItems), // fcalculate the UNION of followPos
@@ -354,6 +353,7 @@ func convertToDFA(stateSets []*nodeSet, transitionTokens []string) *DFA {
 
 	// Convert stateSets to States
 	for _, s := range stateSets {
+		SortActionsByPriority(s.actions)
 		stateMap[s.id] = &State{
 			Id:          fmt.Sprintf("%d", s.id), // Convert int ID to string
 			IsFinal:     s.isFinal,
@@ -384,6 +384,66 @@ func convertToDFA(stateSets []*nodeSet, transitionTokens []string) *DFA {
 	}
 
 	return dfa
+}
+
+// =======================================
+//  REMOVE ABSORTION STATES
+// =======================================
+
+func RemoveAbsortionStates(dfa *DFA) {
+
+	// Identify Absortion states
+	absStates := make([]*State, 0)
+	absStatesIndex := make([]int, 0)
+	normalStates := make([]*State, 0)
+
+	for i, state := range dfa.States {
+		count := 0
+		for _, nextStates := range state.Transitions {
+			if state.Id == nextStates.Id {
+				count++
+			}
+		}
+		// Interchange the count, for the number of final characters
+		if count == 4 {
+			absStates = append(absStates, state)
+			absStatesIndex = append(absStatesIndex, i)
+			continue
+		}
+		normalStates = append(normalStates, state)
+	}
+
+	// Remove connections
+	for _, state := range normalStates {
+		keysToDelete := make([]string, 0)
+		for k, nextState := range state.Transitions {
+			if containsAbsortionState(nextState.Id, absStates) {
+				keysToDelete = append(keysToDelete, k)
+			}
+		}
+		for _, keys := range keysToDelete {
+			delete(state.Transitions, keys)
+		}
+	}
+
+	// Remove Absortion States itself
+	newStates := dfa.States[:0]
+	for _, x := range normalStates {
+		newStates = append(newStates, x)
+	}
+	// Garbage collect remaining States
+	clear(dfa.States[len(newStates):])
+	dfa.States = newStates
+}
+
+// Check if and Node ID is contained in a List of States.
+func containsAbsortionState(id string, list []*State) bool {
+	for _, v := range list {
+		if v.Id == id {
+			return true
+		}
+	}
+	return false
 }
 
 // ============================

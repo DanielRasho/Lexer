@@ -67,6 +67,9 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 	}
 	dfa.RenderDFA(automata, "./diagram/automata.png")
 
+	dfa.RemoveAbsortionStates(automata)
+	dfa.RenderDFA(automata, "./diagram/automataFinal.png")
+
 	lextemp := Lex_writer.CreateLexTemplateComponentes(yalexDefinition, automata)
 	Lex_writer.FillwithTemplate("./template/LexTemplate.go", lextemp)
 
