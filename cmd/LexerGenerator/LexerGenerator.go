@@ -27,5 +27,5 @@ func main() {
 	fmt.Printf("Output file: %s\n", *outputFlag)
 
 	// CODE FOR GENERATING LEXER ...
-	generator.Compile(*fileFlag, *outputFlag)
+	generator.Compile(*fileFlag, *outputFlag, true)
 }

@@ -15,7 +15,7 @@ import (
 // Distinguish between to types of symbols:
 // - Actionable symbol: Metacharacter, that contains an action to execute when a pattern is recognized.
 // - Common Symbol : just represents a plain character
-func NewDFA(rawExpresion []postfix.RawSymbol) (*DFA, error) {
+func NewDFA(rawExpresion []postfix.RawSymbol, showLogs bool) (*DFA, error) {
 
 	// Convert Raw Symbols to Symbols on postfix
 	_, postfixExpr, err := postfix.RegexToPostfix(rawExpresion)
@@ -23,11 +23,13 @@ func NewDFA(rawExpresion []postfix.RawSymbol) (*DFA, error) {
 		return nil, err
 	}
 
-	fmt.Print("\n\n")
-	for _, a := range postfixExpr {
-		fmt.Print(a.Value)
+	if showLogs {
+		fmt.Print("\n\n")
+		for _, a := range postfixExpr {
+			fmt.Print(a.Value)
+		}
+		fmt.Print("\n\n")
 	}
-	fmt.Print("\n\n")
 
 	// Build Abstract Syntax Tree
 
@@ -58,8 +60,10 @@ func NewDFA(rawExpresion []postfix.RawSymbol) (*DFA, error) {
 
 	// Simplify DFA
 	intermediateStates := simplifyStates(finalSymbols, firstPost, positionTable)
-	printPositionTable(positionTable)
-	printStateSetTable(intermediateStates, finalSymbols)
+	if showLogs {
+		printPositionTable(positionTable)
+		printStateSetTable(intermediateStates, finalSymbols)
+	}
 
 	// Build DFA
 	dfa := convertToDFA(intermediateStates, finalSymbols)

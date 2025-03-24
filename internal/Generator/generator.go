@@ -12,7 +12,7 @@ import (
 )
 
 // Given a file to read and a output path, writes a lexer definition to the desired path.
-func Compile(filePath, outputPath string) error {
+func Compile(filePath, outputPath string, showLogs bool) error {
 
 	// Parse Yalex file definition
 	yalexDefinition, err := yalex_reader.Parse(filePath)
@@ -57,13 +57,14 @@ func Compile(filePath, outputPath string) error {
 	}
 
 	// Generate DFA for language recognition
-	automata, err := dfa.NewDFA(rawExpresion)
+	automata, err := dfa.NewDFA(rawExpresion, showLogs)
 	if err != nil {
 		return err
 	}
 
-	dfa.PrintDFA(automata)
-
+	if showLogs {
+		dfa.PrintDFA(automata)
+	}
 	dfa.RenderDFA(automata, "./diagram/automata.png")
 
 	lextemp := Lex_writer.CreateLexTemplateComponentes(yalexDefinition, automata)
