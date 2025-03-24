@@ -16,6 +16,7 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	readingrules := false
 	readingfooter := false
 	readingbody := false
+	metcond := true
 
 	var Header string
 	var Footer string
@@ -27,12 +28,24 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	for filereader.NextLine(&line) {
 		// Starting with header once it finds the end -->
 		if line == "%{\n" || readinghead {
+
+			if line == "%{\n" {
+				metcond = false
+			}
+
+			if line == "%}\n" {
+				metcond = false
+			}
+
 			readinghead = true
-			Header = Header + line + "\n"
+			if metcond {
+				Header = Header + line + "\n"
+			}
 			//Ends it and dont have to add another line for header
 			if line == "%}\n" {
 				readinghead = false
 			}
+			metcond = true
 		}
 
 		//Patterns
@@ -88,9 +101,11 @@ func Parse(filePath string) (*YALexDefinition, error) {
 				key = "{" + key + "}"
 				value := strings.SplitAfterN(Tokens[i], " ", 2)[1]
 				value = strings.TrimSpace(value)
+				value = strings.ReplaceAll(value, `\t`, "\t") // Replace tab with space
+				value = strings.ReplaceAll(value, `\n`, "\n") // Replace newline with space
+				value = strings.ReplaceAll(value, `\r`, "\r") // Replace carriage return with space
 				for i, valor := range hashtokens {
 					value = strings.ReplaceAll(value, i, valor)
-
 				}
 
 				hashtokens[key] = value

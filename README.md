@@ -22,6 +22,13 @@ task test                               // Run tests
 task clean                              // Removes executables
 ```
 
+
+## HOW TO RUN THE PROGRAM? 🎬
+
+```bash
+
+```
+
 ## The YALex File 📄
 Since YALex initial definition was meant for C, we tweak it a little bit to be easer to work with using Go. Below is the structure for a YALEX go file. You can find more examples on `examples/`
 
@@ -80,4 +87,11 @@ rule entrypoint =
     // ======== FOOTER =======
     // The entire contents of this section will be COPIED to the END of the generated Lexer.go file
 }
+```
+
+
+## DEMOSTRACION VIDEO 🎬
+
+```bash
+
 ```
