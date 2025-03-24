@@ -56,10 +56,12 @@ func Compile(filePath, outputPath string) error {
 	}
 
 	// Generate DFA for language recognition
-	_, err = dfa.NewDFA(rawExpresion)
+	automata, err := dfa.NewDFA(rawExpresion)
 	if err != nil {
 		return err
 	}
+
+	dfa.RenderDFA(automata, "./diagram/automata.png")
 
 	// Simplify
 

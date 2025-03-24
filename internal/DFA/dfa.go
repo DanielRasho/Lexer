@@ -32,14 +32,16 @@ func NewDFA(rawExpresion []postfix.RawSymbol) (*DFA, error) {
 	// Build Abstract Syntax Tree
 
 	ast := BuildAST(postfixExpr)
-	GenerateImageFromRoot(ast, "./diagram/tree.png")
+	RenderAST(ast, "./diagram/tree.png")
 	centinelNode := node{
 		Id:         len(postfixExpr),
 		Value:      "#",
 		Operands:   2,
 		Children:   []node{ast},
 		IsOperator: false,
-		IsFinal:    true}
+		IsFinal:    true,
+		Action:     Action{Priority: -1},
+	}
 
 	rootNode := node{
 		Id:         -(len(postfixExpr) + 1),
@@ -56,6 +58,8 @@ func NewDFA(rawExpresion []postfix.RawSymbol) (*DFA, error) {
 
 	// Simplify DFA
 	intermediateStates := simplifyStates(finalSymbols, firstPost, positionTable)
+	printPositionTable(positionTable)
+	printStateSetTable(intermediateStates, finalSymbols)
 
 	// Build DFA
 	dfa := convertToDFA(intermediateStates, finalSymbols)
@@ -123,6 +127,7 @@ func getNodePosition(root *node, positionTable map[int]positionTableRow) (bool, 
 			nullable: isNullable,
 			firstPos: firstPos,
 			lastPos:  lastPos,
+			action:   Action{Priority: -1},
 		}
 		return isNullable, firstPos, lastPos
 	}
@@ -259,40 +264,38 @@ func simplifyStates(
 
 		// Get SET for each character
 		for _, token := range tokens {
-			// NOTE: MAYBE NOT ALL ACTIONS JOINING HAS BEEN MADE
-			newSet := getNewNodeSetForToken(currentState.value, token, positionTable)
-			// fmt.Printf("ID: %d SET: %v TOKEN: %s \n", currentState.id, newSet.value, token)
+			// Being in the node A (currentState), computing the nextNode with transition "t"
+			//  ┌───┐    ┌───┐
+			//  │ A ┼─t─►│ B │
+			//  └───┘    └───┘
+			// The actions found for "t" will be returned as well, so node A can store them.
+			newSet, newActions := getNewNodeSetForToken(currentState.value, token, positionTable)
 
 			setAlreadyExist, repeatedSet := setExists(&newSet, states)
 
 			// If set does not exist append it
 			if !setAlreadyExist {
-				// fmt.Printf("\tENTER: %v\n", newSet.value)
 				newSet.id = len(states)
 				currentState.transitions[token] = &newSet
+				currentState.actions = append(currentState.actions, newActions...)
 				queue = append(queue, &newSet)
 				states = append(states, &newSet)
 			} else {
 				currentState.transitions[token] = repeatedSet
+				currentState.actions = append(currentState.actions, newActions...)
 			}
-			// for _, r := range states {
-			// 	fmt.Printf("%v ", r.value)
-			// }
-			// fmt.Println("")
 		}
-		// fmt.Println("==================")
 	}
-	// fmt.Println("===================")
-	// for _, a := range states {
-	// 	fmt.Printf("ID: %d %v %v\n", a.id, a.value, a.transitions["b"])
-	// }
 
 	return states
 }
 
-// Given a list of starting token's ID's and positionTable it computes the tokenSet
+// Given a ID's nodeSet and a positionTable it computes the tokenSet
 // for the specific token.
-func getNewNodeSetForToken(items []int, token string, positionTable map[int]positionTableRow) nodeSet {
+//
+// Also it returns the actions found for the token found. This actions will then be
+// transferred to the origin node.
+func getNewNodeSetForToken(items []int, token string, positionTable map[int]positionTableRow) (nodeSet, []Action) {
 	setItems := make([]int, 0, len(items))
 	actions := make([]Action, 0)
 
@@ -322,8 +325,8 @@ func getNewNodeSetForToken(items []int, token string, positionTable map[int]posi
 		value:       removeDuplicates(setItems), // fcalculate the UNION of followPos
 		isFinal:     isFinal,
 		transitions: make(map[string]*nodeSet),
-		actions:     actions,
-	}
+		actions:     []Action{},
+	}, actions
 }
 
 // Function to check if a stateSet exists in a list based on value comparison
