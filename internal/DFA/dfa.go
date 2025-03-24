@@ -9,18 +9,19 @@ import (
 
 // Generates a Deterministic finite automate for language recogniation based on sequence of raw symbols
 //
-// # Parameters
-//
+// Parameters
 // - rawExpresion: a list of symbols that represents a regrex expresion.
 // Distinguish between to types of symbols:
 // - Actionable symbol: Metacharacter, that contains an action to execute when a pattern is recognized.
 // - Common Symbol : just represents a plain character
-func NewDFA(rawExpresion []postfix.RawSymbol, showLogs bool) (*DFA, error) {
+//
+// Returns the DFA built, the number of final symbols (used for absortion state removal)
+func NewDFA(rawExpresion []postfix.RawSymbol, showLogs bool) (*DFA, int, error) {
 
 	// Convert Raw Symbols to Symbols on postfix
 	_, postfixExpr, err := postfix.RegexToPostfix(rawExpresion)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	if showLogs {
@@ -68,7 +69,7 @@ func NewDFA(rawExpresion []postfix.RawSymbol, showLogs bool) (*DFA, error) {
 	// Build DFA
 	dfa := convertToDFA(intermediateStates, finalSymbols)
 
-	return dfa, nil
+	return dfa, len(finalSymbols), nil
 }
 
 // Return a list with all different final symbols (Not operators) from an expresion.
@@ -390,7 +391,13 @@ func convertToDFA(stateSets []*nodeSet, transitionTokens []string) *DFA {
 //  REMOVE ABSORTION STATES
 // =======================================
 
-func RemoveAbsortionStates(dfa *DFA) {
+// Remove the absortion states from a dfa in-place.
+//
+// - numFinalSymbol : refers the number of symbols that a node can have to transition.
+// Exregex: ab|(cc) = 3 different final symbols {a,b,c}
+//
+// NOTE: this will make the resulting graph not DFA complient.
+func RemoveAbsortionStates(dfa *DFA, numFinalSymbol int) {
 
 	// Identify Absortion states
 	absStates := make([]*State, 0)
@@ -405,7 +412,7 @@ func RemoveAbsortionStates(dfa *DFA) {
 			}
 		}
 		// Interchange the count, for the number of final characters
-		if count == 4 {
+		if count == numFinalSymbol {
 			absStates = append(absStates, state)
 			absStatesIndex = append(absStatesIndex, i)
 			continue

@@ -57,7 +57,7 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 	}
 
 	// Generate DFA for language recognition
-	automata, err := dfa.NewDFA(rawExpresion, showLogs)
+	automata, numFinalSymbols, err := dfa.NewDFA(rawExpresion, showLogs)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 	}
 	dfa.RenderDFA(automata, "./diagram/automata.png")
 
-	dfa.RemoveAbsortionStates(automata)
+	dfa.RemoveAbsortionStates(automata, numFinalSymbols)
 	dfa.RenderDFA(automata, "./diagram/automataFinal.png")
 
 	lextemp := Lex_writer.CreateLexTemplateComponentes(yalexDefinition, automata)
