@@ -36,6 +36,7 @@
 // ======= RULES ========
 %%
 "if"      { return IF }
+"func"      { return FUNC }
 "else"    { return ELSE }
 "while"   { return WHILE }
 "return"  { return RETURN }

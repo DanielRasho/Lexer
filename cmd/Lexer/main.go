@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	lexer, err := NewLexer("./examples/test2.yaa")
+	lexer, err := NewLexer("./examples/test1.yaa")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
