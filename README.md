@@ -1,16 +1,9 @@
 <h1 align="center">YAAALex 🚀</h1>
-<h3 align="center">(Yet Another Another Another Lexer) </h3>
+<h3 align="center">(Yet Another Another Lexer Generator)</h3>
 
-# Tareas
-1. Leer el archivo Yaalex -> Andre Jo
-2. Parsear eso a un dfa -> Rayo
-3. Ajustar minimizacion para el nuevo tipo de automata  -> Andre Jo
-4. Escribir template del lexer -> Rayo
-5. Escribir metodos para rellenar la template -> Andre Jo
-6. Crear mains: 
-    - Crear main del generador -> Andre Jo
-    - Crear main de prueba para usar lexers generados -> Rayo
-    - Fuzz testing
+Hi! This project aims to be an educational implementation of a **Lexer Generator** following a Lex-like sintax to configure it. 
+
+It uses a **Deterministic Finite Automata(DFA)** for Regex Patterns recognition. Down below, there will be more explanation about the actual pipeline the inputs suffer in order to recognize tokens.
 
 ## Getting Started 🎬
 
@@ -20,13 +13,6 @@ task run <YALex file> <Output path>     // Runs YAAAlex with an definition file 
 task testLex <YALex file >              // Builds and compiles a lexer file, and run it with a dummy main.
 task test                               // Run tests
 task clean                              // Removes executables
-```
-
-
-## HOW TO RUN THE PROGRAM? 🎬
-
-```bash
-
 ```
 
 ## The YALex File 📄
@@ -89,9 +75,36 @@ rule entrypoint =
 }
 ```
 
+## The General Pipeline
+A lexer is a piece of software that can identify patterns in an input, and tell:
 
-## DEMOSTRACION VIDEO 🎬
+> *"Hey, this '934' its a NUMBER according to the Regex Pattern tu told me."*
 
-```bash
+It reports this information in the shape of a **Token** which is a a data structure, that other programs can work with.
 
-```
+It turns out that all lexers share many components, **making easy to standarize them** an build a Lexer Generator, this is what our Yaalex do! The general flow, consist on:
+
+1. Providing a Yaalex definition WHICH specifies all the patterns the lexer will recognize, and HOW to react when encounter them.
+2. A template, which contains the common pieces all lexers share (check ours at `/template`).
+3. The generator takes those definitions and builds a functional `lexer.go` file
+4. Provide the `lexer.go` a code to tokenize, and fetch the tokens.
+
+![](./pipeline.png)
+
+### The componentes of a Lexer
+So before building a generator we first have to understand what we are generating.
+
+A lexer is basically conformed by 4 parts:
+1. **A file reader:** responsable for fetching the actual text from a file to lex.
+2. **An automata (DFA):** The ❤️ of the lexer, stores all the patterns acepted by the language a long with actions of WHAT to do when a pattern is encountered.
+3. **getNextToken():** This function receives symbols from a file and iterate over the automata to recognizes a patterns. *It returns the larger pattern it can find*.
+4. **Header & Footer**: Since we would like to have some degree of freedom we add a **Header** and a **Footer** sections, where user can write whatever Go code it wants. 
+
+From this components there are only 2 that varies from lexer to lexer: The header & footer, and the automata. It is the Lexer Generator's job to create those and embed them on an `lexer.go` file, everything else lives on the template.
+
+![](./lexerComponents.png)
+
+### Construction of DFA
+
+
+## The actual data transformation
