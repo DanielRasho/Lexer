@@ -48,7 +48,7 @@ func shuntingyard(tokens []Symbol) []Symbol {
 			for {
 				tokenValue, _ := stack.Peek().(Symbol)
 
-				if tokenValue.Value == "(" && token.IsOperator {
+				if tokenValue.Value == "(" && tokenValue.IsOperator {
 					break
 				}
 				postfix = append(postfix, stack.Pop().(Symbol))
