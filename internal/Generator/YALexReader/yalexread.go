@@ -1,7 +1,6 @@
 package yalex_reader
 
 import (
-	"fmt"
 	"strings"
 
 	io "github.com/DanielRasho/Lexer/internal/IO"
@@ -137,8 +136,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 					pattern = pattern[:len(pattern)-1]
 				}
 			}
-
-			fmt.Println(pattern)
 
 			yal.Pattern = pattern
 			yal.Action = strings.TrimSpace(strings.SplitAfterN(Rules[i], "  ", 2)[1])

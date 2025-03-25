@@ -1,8 +1,10 @@
 // package should be specified after file generation
+package main
 
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -13,55 +15,51 @@ import (
 // Contains the exact same content defined on the Yaaalex file
 // Tokens IDs should be defined here.
 
-    // The entire contents of this section will be copied to the beginning of the generated Lexer.go file
+// The entire contents of this section will be copied to the beginning of the generated Lexer.go file
 
-    //  ------ TOKENS ID -----
+//  ------ TOKENS ID -----
 
-    // Define the token types that the lexer will recognize
+// Define the token types that the lexer will recognize
 
-    const (
+const (
+	IF = iota
 
-        IF = iota
+	ELSE
 
-        ELSE
+	WHILE
 
-        WHILE
+	RETURN
 
-        RETURN 
+	ASIGN
 
-        ASIGN
+	PLUS
 
-        PLUS
+	MINUS
 
-        MINUS
+	MULT
 
-        MULT
+	DIV
 
-        DIV
+	LPAREN
 
-        LPAREN
+	RPAREN
 
-        RPAREN
+	LBRACE
 
-        LBRACE
+	RBRACE
 
-        RBRACE
+	ID
 
-        ID
+	NUMBER
 
-        NUMBER
-
-        WS
-
-    )
-
-
+	WS
+)
 
 // =====================
 //	  Lexer
 // =====================
 
-const NO_LEXEME = -1 // Flag constant that is used when no lexeme is recognized nor 
+const NO_LEXEME = -1   // Flag constant that is used when no lexeme is recognized nor
 const SKIP_LEXEME = -2 // Flag when an action require the lexer to IGNORE the current lexeme
 
 // PatternNotFound represents an error when a pattern is not found in a file
@@ -144,7 +142,7 @@ func (l *Lexer) GetNextToken() (Token, error) {
 				lastTokenID = newTokenID
 			}
 		}
-		// 2. Read the next rune 
+		// 2. Read the next rune
 		r, size, err := l.reader.ReadRune()
 		if err != nil {
 			// return the last recognized lexeme
@@ -253,238 +251,284 @@ type state struct {
 }
 
 // Representes a user defined action that should happen
-// when a pattern is recognized. The function should return an int, that represents a 
-// tokenID. Its shape should be look something like : 
-// 
-// 	func () int {
-// 		tokenID := SKIP_LEXEM
-//		<user defined code>
-//		return tokenID
-//  }
+// when a pattern is recognized. The function should return an int, that represents a
+// tokenID. Its shape should be look something like :
 //
+//		func () int {
+//			tokenID := SKIP_LEXEM
+//			<user defined code>
+//			return tokenID
+//	 }
 type action func() int
 
 // createDFA constructs the DFA that recognizes the user language.
 func createDFA() *dfa {
-	state0 := &state{id: "0" , 
-Actions: []action{ 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state1 := &state{id: "1" , 
-Actions: []action{ 
- { return ID 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state2 := &state{id: "2" , 
-Actions: []action{ 
- 
-return SKIP_LEXEME } , 
- { return NUMBER 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- { return ID 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state4 := &state{id: "4" , 
-Actions: []action{ 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- {
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- { return NUMBER 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- { return ID 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
- 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state5 := &state{id: "5" , transitions: make(map[Symbol]*state), isFinal: true}
+	state4 := &state{id: "4",
+		actions: []action{
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+		}, transitions: make(map[Symbol]*state), isFinal: false}
+	state5 := &state{id: "5", transitions: make(map[Symbol]*state), isFinal: true}
+	state0 := &state{id: "0",
+		actions: []action{
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+		}, transitions: make(map[Symbol]*state), isFinal: false}
+	state1 := &state{id: "1",
+		actions: []action{
+			func() int {
+				return ID
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+		}, transitions: make(map[Symbol]*state), isFinal: false}
+	state2 := &state{id: "2",
+		actions: []action{
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return NUMBER
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return ID
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+			func() int {
+				return SKIP_LEXEME
+			},
+		}, transitions: make(map[Symbol]*state), isFinal: false}
 
-state0.transitions["2"] = state2
-state0.transitions[" "] = state4
-state0.transitions["a"] = state1
-state0.transitions["b"] = state1
-state0.transitions["
-"] = state4
-state0.transitions["	"] = state4
-state0.transitions["A"] = state1
-state0.transitions["B"] = state1
-state0.transitions["1"] = state2
-state0.transitions["c"] = state1
-state0.transitions["0"] = state2
-state1.transitions["b"] = state1
-state1.transitions["1"] = state1
-state1.transitions["2"] = state1
-state1.transitions["10"] = state5
-state1.transitions["B"] = state1
-state1.transitions["a"] = state1
-state1.transitions["c"] = state1
-state1.transitions["0"] = state1
-state1.transitions["A"] = state1
-state2.transitions["0"] = state2
-state2.transitions["2"] = state2
-state2.transitions["1"] = state2
-state2.transitions["11"] = state5
-state4.transitions["
-"] = state4
-state4.transitions["12"] = state5
-state4.transitions["	"] = state4
-state4.transitions[" "] = state4
+	state4.transitions[" "] = state4
+	state4.transitions["	"] = state4
+	state4.transitions["\n"] = state4
+	state4.transitions["12"] = state5
+	state0.transitions[" "] = state4
+	state0.transitions["B"] = state1
+	state0.transitions["b"] = state1
+	state0.transitions["2"] = state2
+	state0.transitions["\n"] = state4
+	state0.transitions["a"] = state1
+	state0.transitions["1"] = state2
+	state0.transitions["c"] = state1
+	state0.transitions["0"] = state2
+	state0.transitions["	"] = state4
+	state0.transitions["A"] = state1
+	state1.transitions["a"] = state1
+	state1.transitions["b"] = state1
+	state1.transitions["0"] = state1
+	state1.transitions["A"] = state1
+	state1.transitions["1"] = state1
+	state1.transitions["10"] = state5
+	state1.transitions["B"] = state1
+	state1.transitions["c"] = state1
+	state1.transitions["2"] = state1
+	state2.transitions["0"] = state2
+	state2.transitions["11"] = state5
+	state2.transitions["1"] = state2
+	state2.transitions["2"] = state2
 
-return &dfa{ 
-startState: state0,
-states: []*state{ state0, state1state2state4state5}, 
-}
+	return &dfa{
+		startState: state0,
+		states:     []*state{state0, state1, state2, state4, state5},
+	}
 }
 
 // =====================
 //	Footer
 // =====================
 // Contains the exact same content defined on the Yaaalex file
-

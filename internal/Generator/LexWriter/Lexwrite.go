@@ -3,6 +3,7 @@ package Lex_writer
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -33,17 +34,17 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 			}
 
 			//Adds the initial action
-			actions := "\nActions: []action{ \n"
+			actions := "\nactions: []action{ \n"
 
 			//For each action add it in the declared actions,
 			for e := range len(slice) {
 
 				codigo := strings.TrimSpace(slice[e].Code)
 				if strings.Compare(codigo, "") == 1 {
-					codigo = codigo[:len(codigo)-1]
+					codigo = codigo[1 : len(codigo)-1]
 				}
 
-				actions = actions + " " + codigo + "\nreturn SKIP_LEXEME } , \n"
+				actions = actions + " func() int {" + codigo + "\nreturn SKIP_LEXEME } , \n"
 			}
 
 			//Once added actions we can create the state with id state0
@@ -58,7 +59,11 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 
 		// Stores all the transitions that are made for every state
 		for symbol := range adf.States[i].Transitions {
-			transitions = transitions + "state" + adf.States[i].Id + ".transitions[\"" + symbol + "\"] = state" + adf.States[i].Transitions[symbol].Id + "\n"
+			transymbol := symbol
+			if strings.Compare(symbol, "\n") == 0 {
+				transymbol = "\\n"
+			}
+			transitions = transitions + "state" + adf.States[i].Id + ".transitions[\"" + transymbol + "\"] = state" + adf.States[i].Transitions[symbol].Id + "\n"
 		}
 
 	}
@@ -66,16 +71,16 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 	automata = automata + "\n" + transitions
 
 	//Concatena en una lista los estados state{state0, state1, state2, state3, state4}
+
+	sort.Slice(listaStates, func(i, j int) bool {
+		return extractNumber(listaStates[i]) < extractNumber(listaStates[j])
+	})
 	for numi := range len(listaStates) {
 
 		if numi < 1 {
 			returningdfa = returningdfa + "\nreturn &dfa{ \nstartState: " + listaStates[numi] + ",\nstates: []*state{ " + listaStates[numi] + ", "
 		} else {
-			if numi > len(listaStates)-1 {
-				returningdfa = returningdfa + listaStates[numi] + ", "
-			} else {
-				returningdfa = returningdfa + listaStates[numi]
-			}
+			returningdfa = returningdfa + listaStates[numi] + ", "
 
 		}
 
@@ -126,4 +131,11 @@ func FillwithTemplate(filePath string, lextemp LexTemplate, outputfilepath strin
 		return
 	}
 
+}
+
+func extractNumber(s string) int {
+	// Extract the number part from "stateX"
+	numPart := strings.TrimPrefix(s, "state")
+	num, _ := strconv.Atoi(numPart)
+	return num
 }
