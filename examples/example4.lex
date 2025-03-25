@@ -53,5 +53,5 @@
     // The entire contents of this section will be copied to the beginning of the generated Lexer.go file
     //  ------ TOKENS ID -----
     // Define the token types that the lexer will recognize
-   This is a footer
+    //This is a footer
 %}

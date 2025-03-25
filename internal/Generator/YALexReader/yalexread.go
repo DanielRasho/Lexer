@@ -17,6 +17,7 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	readingfooter := false
 	readingbody := false
 	metcond := true
+	metcond1 := true
 	counter := 0
 
 	var Header string
@@ -45,7 +46,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 			//Ends it and dont have to add another line for header
 			if line == "%}\n" {
 				readinghead = false
-				metcond = true
 			}
 			metcond = true
 		}
@@ -64,23 +64,27 @@ func Parse(filePath string) (*YALexDefinition, error) {
 		//Footer
 		if line == "%{\n" && !readinghead || readingfooter {
 			readingfooter = true
+			readinghead = false
+			metcond = false
 
 			if line == "%{\n" {
-				metcond = false
+				metcond1 = false
 			}
 
 			if line == "%}\n" {
-				metcond = false
+				metcond1 = false
 			}
 
 			readinghead = true
-			if metcond {
+			if metcond1 {
 				Footer = Footer + line + "\n"
 			}
 
 			if line == "%}\n" {
 				readingfooter = false
+
 			}
+			metcond1 = true
 		}
 
 		//Rules Rud
