@@ -78,7 +78,7 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 		dfa.PrintDFA(automata)
 	}
 
-	dfa.RenderDFA(automata, "./diagram/automata.png")
+	// dfa.RenderDFA(automata, "./diagram/automata.png")
 
 	table := min.Initialize_Tabla_a_ADF(automata)
 	mapeo := min.Crear_Tabla_minimizar(table)
@@ -87,7 +87,7 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 	}
 	min.Revisar_reemplazar(mapeo, automata)
 
-	dfa.RenderDFA(automata, "./diagram/minautomata.png")
+	// dfa.RenderDFA(automata, "./diagram/minautomata.png")
 
 	//Despues de minimize
 	dfa.RemoveAbsortionStates(automata, numFinalSymbols) //Destructive

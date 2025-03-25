@@ -40,14 +40,10 @@
 "while"   { return WHILE }
 "return"  { return RETURN }
 "="       { return ASSIGN }
-"+"       { return PLUS }
+"\+"       { return PLUS }
 "-"       { return MINUS }
-"*"       { return MULT }
+"\*"       { return MULT }
 "/"       { return DIV }
-"("       { return LPAREN }
-")"       { return RPAREN }
-"{"       { return LBRACE }
-"}"       { return RBRACE }
 {id}      { return ID }
 {number}  { return NUMBER }
 {ws}      {}
