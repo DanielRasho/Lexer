@@ -114,7 +114,7 @@ func Tuplas_a_sacar(mapeo map[string]map[string]bool, tabla Table) map[string]ma
 
 	return mapeo
 }
-func Revisar_reemplazar(mapeo map[string]map[string]bool, adf dfa.DFA) dfa.DFA {
+func Revisar_reemplazar(mapeo map[string]map[string]bool, adf *dfa.DFA) *dfa.DFA {
 	for key, value := range mapeo {
 		for key_2, value := range value {
 			if !value {

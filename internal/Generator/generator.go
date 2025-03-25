@@ -6,6 +6,7 @@ import (
 
 	dfa "github.com/DanielRasho/Lexer/internal/DFA"
 	balancer "github.com/DanielRasho/Lexer/internal/DFA/Balancer"
+	min "github.com/DanielRasho/Lexer/internal/DFA/Minimize"
 	postfix "github.com/DanielRasho/Lexer/internal/DFA/Postfix"
 	Lex_writer "github.com/DanielRasho/Lexer/internal/Generator/LexWriter"
 	yalex_reader "github.com/DanielRasho/Lexer/internal/Generator/YALexReader"
@@ -62,16 +63,31 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 		return err
 	}
 
+	// -- ARRAY 2000 CHARACTERS
+
+	// array igual nil
+
 	if showLogs {
 		dfa.PrintDFA(automata)
 	}
+
 	dfa.RenderDFA(automata, "./diagram/automata.png")
 
-	dfa.RemoveAbsortionStates(automata, numFinalSymbols)
+	table := min.Initialize_Tabla_a_ADF(automata)
+	mapeo := min.Crear_Tabla_minimizar(table)
+	for i := 0; i < len(table.Table_2D); i++ {
+		mapeo = min.Tuplas_a_sacar(mapeo, table)
+	}
+	min.Revisar_reemplazar(mapeo, automata)
+
+	dfa.RenderDFA(automata, "./diagram/minautomata.png")
+
+	//Despues de minimize
+	dfa.RemoveAbsortionStates(automata, numFinalSymbols) //Destructive
 	dfa.RenderDFA(automata, "./diagram/automataFinal.png")
 
 	lextemp := Lex_writer.CreateLexTemplateComponentes(yalexDefinition, automata)
-	Lex_writer.FillwithTemplate("./template/LexTemplate.go", lextemp)
+	Lex_writer.FillwithTemplate("./template/LexTemplate.go", lextemp, outputPath)
 
 	return nil
 }

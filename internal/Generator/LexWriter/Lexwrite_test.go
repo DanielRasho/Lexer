@@ -21,7 +21,7 @@ func Test_check(t *testing.T) {
 
 	lextemp := CreateLexTemplateComponentes(&yal, &adf)
 
-	FillwithTemplate("../../../template/LexTemplate.go", lextemp)
+	FillwithTemplate("../../../template/LexTemplate.go", lextemp, "../../examples/OutputTemplate.go")
 
 }
 

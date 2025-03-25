@@ -92,7 +92,9 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 
 }
 
-func FillwithTemplate(filePath string, lextemp LexTemplate) {
+func FillwithTemplate(filePath string, lextemp LexTemplate, outputfilepath string) {
+
+	//Generate DFA y Remove Abosptions States
 
 	var content string
 	var line string
@@ -103,15 +105,13 @@ func FillwithTemplate(filePath string, lextemp LexTemplate) {
 		content = content + line
 	}
 
-	fmt.Println(content)
-
 	tmpl, err := template.New("fileTemplate").Parse(content)
 	if err != nil {
 		fmt.Println("Error parsing template:", err)
 		return
 	}
 
-	outputFile, err := os.Create("OutputTemplate.go")
+	outputFile, err := os.Create(outputfilepath)
 	if err != nil {
 		fmt.Println("Error creating output file:", err)
 		return
