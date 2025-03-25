@@ -45,12 +45,19 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 			for e := range len(slice) {
 
 				codigo := strings.TrimSpace(slice[e].Code)
+				fmt.Println(adf.States[i].Id)
+				fmt.Println(codigo)
+				fmt.Println(slice)
+
 				if strings.Compare(codigo, "") == 1 {
 					codigo = codigo[1 : len(codigo)-1]
 					actions = actions + " func() int {" + codigo + "\nreturn SKIP_LEXEME } , \n"
 				}
 
 			}
+
+			clear(slice)
+			slice = slice[:0]
 
 			//Once added actions we can create the state with id state0
 			automata = automata + "state" + adf.States[i].Id + " := &state{id: \"" + adf.States[i].Id + "\" , " + actions + "}, transitions: make(map[Symbol]*state), isFinal: " + strconv.FormatBool(adf.States[i].IsFinal) + "}\n"
