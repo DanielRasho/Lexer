@@ -1,7 +1,6 @@
 package yalex_reader
 
 import (
-	"fmt"
 	"strings"
 
 	io "github.com/DanielRasho/Lexer/internal/IO"
@@ -65,9 +64,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 		if line == "%%\n" || readingrules {
 			readingrules = true
 
-			//Reads the rules
-			fmt.Println("linea:", line)
-
 			if strings.Compare(line, "\n") == 1 {
 				Rules = append(Rules, line)
 			}
@@ -92,8 +88,6 @@ func Parse(filePath string) (*YALexDefinition, error) {
 		}
 
 	}
-
-	fmt.Println("Footer:", Footer)
 
 	//Quitas las llaves
 	Tokens = Tokens[1 : len(Tokens)-1]
