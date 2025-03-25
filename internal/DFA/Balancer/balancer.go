@@ -4,8 +4,6 @@ Package balancer proporciona una implementación para determinar si una expresi�
 
 package balancer
 
-import "fmt"
-
 /*
 IsBalanced verifica si una expresión está balanceada y registra los pasos del stack.
 
@@ -61,7 +59,6 @@ func IsBalanced(expression string) (bool, []string) {
 			stack = stack[:len(stack)-1]
 			steps = append(steps, "Pop: "+string(char))
 		}
-		fmt.Println("LOOP")
 		i++
 	}
 
