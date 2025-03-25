@@ -29,8 +29,6 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 
 			// Sorts by priority so if it finds priority 0 then appends by index 0
 
-			fmt.Println(adf.States[i].Actions)
-
 			for _, action := range adf.States[i].Actions {
 				index := action.Priority
 				if index > len(slice) {

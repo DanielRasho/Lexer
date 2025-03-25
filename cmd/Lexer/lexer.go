@@ -55,6 +55,14 @@ import (
 
     )
 
+    // The entire contents of this section will be copied to the beginning of the generated Lexer.go file
+
+    //  ------ TOKENS ID -----
+
+    // Define the token types that the lexer will recognize
+
+   This is a footer
+
 
 
 // =====================
@@ -266,283 +274,283 @@ type action func() int
 
 // createDFA constructs the DFA that recognizes the user language.
 func createDFA() *dfa {
-	state2 := &state{id: "2" , 
-actions: []action{ 
- func() int { return MULT 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state4 := &state{id: "4" , transitions: make(map[Symbol]*state), isFinal: false}
-state8 := &state{id: "8" , transitions: make(map[Symbol]*state), isFinal: false}
-state12 := &state{id: "12" , 
-actions: []action{ 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state14 := &state{id: "14" , transitions: make(map[Symbol]*state), isFinal: true}
-state17 := &state{id: "17" , transitions: make(map[Symbol]*state), isFinal: false}
-state18 := &state{id: "18" , transitions: make(map[Symbol]*state), isFinal: false}
-state23 := &state{id: "23" , transitions: make(map[Symbol]*state), isFinal: false}
-state0 := &state{id: "0" , 
-actions: []action{ 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state7 := &state{id: "7" , transitions: make(map[Symbol]*state), isFinal: false}
+	state6 := &state{id: "6" , transitions: make(map[Symbol]*state), isFinal: false}
 state11 := &state{id: "11" , 
 actions: []action{ 
- func() int { return ASSIGN 
-return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
+ func() int { return MINUS 
 return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
-state15 := &state{id: "15" , transitions: make(map[Symbol]*state), isFinal: false}
-state16 := &state{id: "16" , 
+state12 := &state{id: "12" , 
 actions: []action{ 
- func() int { return IF 
+ func() int { return MINUS 
 return SKIP_LEXEME } , 
  func() int { return ASSIGN 
 return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
-state20 := &state{id: "20" , transitions: make(map[Symbol]*state), isFinal: false}
-state24 := &state{id: "24" , transitions: make(map[Symbol]*state), isFinal: false}
-state25 := &state{id: "25" , transitions: make(map[Symbol]*state), isFinal: false}
-state5 := &state{id: "5" , 
+state15 := &state{id: "15" , transitions: make(map[Symbol]*state), isFinal: true}
+state0 := &state{id: "0" , 
 actions: []action{ 
- func() int { return IF 
+ func() int { return MINUS 
 return SKIP_LEXEME } , 
  func() int { return ASSIGN 
 return SKIP_LEXEME } , 
- func() int {
-return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
-state6 := &state{id: "6" , 
+state7 := &state{id: "7" , 
 actions: []action{ 
- func() int { return ID 
+ func() int { return MULT 
 return SKIP_LEXEME } , 
- func() int { return IF 
+ func() int { return MINUS 
 return SKIP_LEXEME } , 
  func() int { return ASSIGN 
 return SKIP_LEXEME } , 
- func() int {
-return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
+state8 := &state{id: "8" , transitions: make(map[Symbol]*state), isFinal: false}
 state9 := &state{id: "9" , 
 actions: []action{ 
- func() int { return MINUS 
-return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
-return SKIP_LEXEME } , 
- func() int { return ASSIGN 
+ func() int { return MULT 
 return SKIP_LEXEME } , 
  func() int {
 return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state13 := &state{id: "13" , transitions: make(map[Symbol]*state), isFinal: false}
-state22 := &state{id: "22" , 
-actions: []action{ 
- func() int { return ELSE 
-return SKIP_LEXEME } , 
  func() int { return MINUS 
-return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
 return SKIP_LEXEME } , 
  func() int { return ASSIGN 
 return SKIP_LEXEME } , 
- func() int {
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state16 := &state{id: "16" , transitions: make(map[Symbol]*state), isFinal: false}
+state19 := &state{id: "19" , transitions: make(map[Symbol]*state), isFinal: false}
+state20 := &state{id: "20" , transitions: make(map[Symbol]*state), isFinal: false}
+state25 := &state{id: "25" , 
+actions: []action{ 
+ func() int { return WHILE 
 return SKIP_LEXEME } , 
  func() int { return MULT 
 return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state27 := &state{id: "27" , 
-actions: []action{ 
- func() int { return ELSE 
-return SKIP_LEXEME } , 
- func() int { return RETURN 
+ func() int {
 return SKIP_LEXEME } , 
  func() int { return MINUS 
 return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
-return SKIP_LEXEME } , 
  func() int { return ASSIGN 
 return SKIP_LEXEME } , 
- func() int {
-return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
- func() int { return PLUS 
-return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
-state3 := &state{id: "3" , 
+state5 := &state{id: "5" , 
 actions: []action{ 
- func() int { return ELSE 
-return SKIP_LEXEME } , 
- func() int { return RETURN 
+ func() int { return WHILE 
 return SKIP_LEXEME } , 
  func() int { return NUMBER 
 return SKIP_LEXEME } , 
- func() int { return MINUS 
-return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
-return SKIP_LEXEME } , 
- func() int { return ASSIGN 
+ func() int { return MULT 
 return SKIP_LEXEME } , 
  func() int {
 return SKIP_LEXEME } , 
- func() int { return MULT 
+ func() int { return MINUS 
 return SKIP_LEXEME } , 
- func() int { return PLUS 
+ func() int { return ASSIGN 
 return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
 state10 := &state{id: "10" , 
 actions: []action{ 
- func() int { return ELSE 
-return SKIP_LEXEME } , 
- func() int { return RETURN 
-return SKIP_LEXEME } , 
- func() int { return DIV 
-return SKIP_LEXEME } , 
- func() int { return NUMBER 
-return SKIP_LEXEME } , 
- func() int { return MINUS 
-return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
-return SKIP_LEXEME } , 
- func() int { return ASSIGN 
-return SKIP_LEXEME } , 
- func() int {
-return SKIP_LEXEME } , 
- func() int { return MULT 
-return SKIP_LEXEME } , 
  func() int { return PLUS 
 return SKIP_LEXEME } , 
-}, transitions: make(map[Symbol]*state), isFinal: false}
-state19 := &state{id: "19" , transitions: make(map[Symbol]*state), isFinal: false}
-state21 := &state{id: "21" , transitions: make(map[Symbol]*state), isFinal: false}
-state26 := &state{id: "26" , 
-actions: []action{ 
  func() int { return WHILE 
 return SKIP_LEXEME } , 
+ func() int { return NUMBER 
+return SKIP_LEXEME } , 
+ func() int { return MULT 
+return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
+return SKIP_LEXEME } , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state13 := &state{id: "13" , transitions: make(map[Symbol]*state), isFinal: false}
+state14 := &state{id: "14" , 
+actions: []action{ 
+ func() int { return IF 
+return SKIP_LEXEME } , 
+ func() int { return PLUS 
+return SKIP_LEXEME } , 
+ func() int { return WHILE 
+return SKIP_LEXEME } , 
+ func() int { return NUMBER 
+return SKIP_LEXEME } , 
+ func() int { return MULT 
+return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
+return SKIP_LEXEME } , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state24 := &state{id: "24" , transitions: make(map[Symbol]*state), isFinal: false}
+state26 := &state{id: "26" , transitions: make(map[Symbol]*state), isFinal: false}
+state27 := &state{id: "27" , 
+actions: []action{ 
+ func() int { return IF 
+return SKIP_LEXEME } , 
+ func() int { return RETURN 
+return SKIP_LEXEME } , 
+ func() int { return PLUS 
+return SKIP_LEXEME } , 
+ func() int { return WHILE 
+return SKIP_LEXEME } , 
+ func() int { return NUMBER 
+return SKIP_LEXEME } , 
+ func() int { return MULT 
+return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
+return SKIP_LEXEME } , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state17 := &state{id: "17" , transitions: make(map[Symbol]*state), isFinal: false}
+state18 := &state{id: "18" , transitions: make(map[Symbol]*state), isFinal: false}
+state21 := &state{id: "21" , transitions: make(map[Symbol]*state), isFinal: false}
+state22 := &state{id: "22" , 
+actions: []action{ 
+ func() int { return IF 
+return SKIP_LEXEME } , 
+ func() int { return ELSE 
+return SKIP_LEXEME } , 
+ func() int { return RETURN 
+return SKIP_LEXEME } , 
+ func() int { return PLUS 
+return SKIP_LEXEME } , 
+ func() int { return WHILE 
+return SKIP_LEXEME } , 
+ func() int { return NUMBER 
+return SKIP_LEXEME } , 
+ func() int { return MULT 
+return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
+return SKIP_LEXEME } , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state23 := &state{id: "23" , transitions: make(map[Symbol]*state), isFinal: false}
+state1 := &state{id: "1" , transitions: make(map[Symbol]*state), isFinal: false}
+state3 := &state{id: "3" , 
+actions: []action{ 
+ func() int { return IF 
+return SKIP_LEXEME } , 
  func() int { return ELSE 
 return SKIP_LEXEME } , 
  func() int { return RETURN 
 return SKIP_LEXEME } , 
  func() int { return DIV 
 return SKIP_LEXEME } , 
+ func() int { return PLUS 
+return SKIP_LEXEME } , 
+ func() int { return WHILE 
+return SKIP_LEXEME } , 
  func() int { return NUMBER 
-return SKIP_LEXEME } , 
- func() int { return MINUS 
-return SKIP_LEXEME } , 
- func() int { return ID 
-return SKIP_LEXEME } , 
- func() int { return IF 
-return SKIP_LEXEME } , 
- func() int { return ASSIGN 
-return SKIP_LEXEME } , 
- func() int {
 return SKIP_LEXEME } , 
  func() int { return MULT 
 return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
+return SKIP_LEXEME } , 
+}, transitions: make(map[Symbol]*state), isFinal: false}
+state4 := &state{id: "4" , 
+actions: []action{ 
+ func() int { return IF 
+return SKIP_LEXEME } , 
+ func() int { return ID 
+return SKIP_LEXEME } , 
+ func() int { return ELSE 
+return SKIP_LEXEME } , 
+ func() int { return RETURN 
+return SKIP_LEXEME } , 
+ func() int { return DIV 
+return SKIP_LEXEME } , 
  func() int { return PLUS 
+return SKIP_LEXEME } , 
+ func() int { return WHILE 
+return SKIP_LEXEME } , 
+ func() int { return NUMBER 
+return SKIP_LEXEME } , 
+ func() int { return MULT 
+return SKIP_LEXEME } , 
+ func() int {
+return SKIP_LEXEME } , 
+ func() int { return MINUS 
+return SKIP_LEXEME } , 
+ func() int { return ASSIGN 
 return SKIP_LEXEME } , 
 }, transitions: make(map[Symbol]*state), isFinal: false}
 
-state2.transitions["17"] = state14
-state4.transitions["l"] = state15
-state8.transitions["e"] = state17
-state12.transitions["15"] = state14
-state17.transitions["t"] = state20
-state18.transitions["i"] = state21
-state23.transitions["r"] = state25
-state0.transitions["c"] = state6
-state0.transitions["A"] = state6
-state0.transitions["r"] = state8
-state0.transitions["2"] = state3
-state0.transitions[" "] = state5
-state0.transitions["w"] = state13
-state0.transitions["*"] = state2
-state0.transitions["B"] = state6
-state0.transitions["a"] = state6
-state0.transitions["/"] = state10
-state0.transitions["+"] = state12
-state0.transitions["\n"] = state5
-state0.transitions["b"] = state6
-state0.transitions["1"] = state3
-state0.transitions["e"] = state4
-state0.transitions["i"] = state7
-state0.transitions["0"] = state3
-state0.transitions["-"] = state9
-state0.transitions["	"] = state5
-state0.transitions["="] = state11
-state7.transitions["f"] = state16
-state11.transitions["14"] = state14
-state15.transitions["s"] = state19
-state16.transitions["10"] = state14
-state20.transitions["u"] = state23
-state24.transitions["e"] = state26
-state25.transitions["n"] = state27
-state5.transitions["21"] = state14
-state5.transitions["\n"] = state5
-state5.transitions["	"] = state5
-state5.transitions[" "] = state5
-state6.transitions["0"] = state6
-state6.transitions["b"] = state6
-state6.transitions["A"] = state6
-state6.transitions["19"] = state14
-state6.transitions["B"] = state6
-state6.transitions["1"] = state6
-state6.transitions["c"] = state6
-state6.transitions["a"] = state6
-state6.transitions["2"] = state6
-state9.transitions["16"] = state14
-state13.transitions["h"] = state18
-state22.transitions["11"] = state14
-state27.transitions["13"] = state14
-state3.transitions["20"] = state14
-state3.transitions["1"] = state3
-state3.transitions["0"] = state3
-state3.transitions["2"] = state3
-state10.transitions["18"] = state14
+state6.transitions["l"] = state16
+state11.transitions["16"] = state15
+state12.transitions["14"] = state15
+state0.transitions["c"] = state4
+state0.transitions["A"] = state4
+state0.transitions["-"] = state11
+state0.transitions["i"] = state1
+state0.transitions["*"] = state7
+state0.transitions["="] = state12
+state0.transitions["2"] = state5
+state0.transitions["+"] = state10
+state0.transitions["\n"] = state9
+state0.transitions["1"] = state5
+state0.transitions["B"] = state4
+state0.transitions["r"] = state13
+state0.transitions["/"] = state3
+state0.transitions[" "] = state9
+state0.transitions["w"] = state8
+state0.transitions["	"] = state9
+state0.transitions["b"] = state4
+state0.transitions["0"] = state5
+state0.transitions["e"] = state6
+state0.transitions["a"] = state4
+state7.transitions["17"] = state15
+state8.transitions["h"] = state17
+state9.transitions["21"] = state15
+state9.transitions[" "] = state9
+state9.transitions["\n"] = state9
+state9.transitions["	"] = state9
+state16.transitions["s"] = state19
 state19.transitions["e"] = state22
-state21.transitions["l"] = state24
-state26.transitions["12"] = state14
+state20.transitions["l"] = state23
+state25.transitions["12"] = state15
+state5.transitions["1"] = state5
+state5.transitions["20"] = state15
+state5.transitions["2"] = state5
+state5.transitions["0"] = state5
+state10.transitions["15"] = state15
+state13.transitions["e"] = state18
+state14.transitions["10"] = state15
+state24.transitions["r"] = state26
+state26.transitions["n"] = state27
+state27.transitions["13"] = state15
+state17.transitions["i"] = state20
+state18.transitions["t"] = state21
+state21.transitions["u"] = state24
+state22.transitions["11"] = state15
+state23.transitions["e"] = state25
+state1.transitions["f"] = state14
+state3.transitions["18"] = state15
+state4.transitions["b"] = state4
+state4.transitions["B"] = state4
+state4.transitions["A"] = state4
+state4.transitions["0"] = state4
+state4.transitions["1"] = state4
+state4.transitions["2"] = state4
+state4.transitions["a"] = state4
+state4.transitions["c"] = state4
+state4.transitions["19"] = state15
 
 return &dfa{ 
 startState: state0,
-states: []*state{ state0, state2, state3, state4, state5, state6, state7, state8, state9, state10, state11, state12, state13, state14, state15, state16, state17, state18, state19, state20, state21, state22, state23, state24, state25, state26, state27, }, 
+states: []*state{ state0, state1, state3, state4, state5, state6, state7, state8, state9, state10, state11, state12, state13, state14, state15, state16, state17, state18, state19, state20, state21, state22, state23, state24, state25, state26, state27, }, 
 }
 }
 
@@ -550,4 +558,18 @@ states: []*state{ state0, state2, state3, state4, state5, state6, state7, state8
 //	Footer
 // =====================
 // Contains the exact same content defined on the Yaaalex file
+%%
+
+
+
+%{
+
+    // The entire contents of this section will be copied to the beginning of the generated Lexer.go file
+
+    //  ------ TOKENS ID -----
+
+    // Define the token types that the lexer will recognize
+
+   This is a footer
+
 

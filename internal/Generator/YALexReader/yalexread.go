@@ -1,6 +1,7 @@
 package yalex_reader
 
 import (
+	"fmt"
 	"strings"
 
 	io "github.com/DanielRasho/Lexer/internal/IO"
@@ -17,6 +18,7 @@ func Parse(filePath string) (*YALexDefinition, error) {
 	readingfooter := false
 	readingbody := false
 	metcond := true
+	counter := 0
 
 	var Header string
 	var Footer string
@@ -64,17 +66,24 @@ func Parse(filePath string) (*YALexDefinition, error) {
 			readingrules = true
 
 			//Reads the rules
-			Rules = append(Rules, line)
+			fmt.Println("linea:", line)
+
+			if strings.Compare(line, "\n") == 1 {
+				Rules = append(Rules, line)
+			}
 
 			//La linea que encuentra las reglas y sus bodies. "%%" si detecta otro entonces se cierra y no lee mas rules
-			if line == "%%%%\n" {
+			if line == "%%\n" && counter > 0 {
 				readingrules = false
 				readingfooter = true
+
 			}
+			counter++
 		}
 
 		//Footer
 		if line == "%{\n" && !readinghead || readingfooter {
+			readingfooter = true
 			Footer = Footer + line + "\n"
 
 			if line == "%}\n" {
@@ -83,6 +92,8 @@ func Parse(filePath string) (*YALexDefinition, error) {
 		}
 
 	}
+
+	fmt.Println("Footer:", Footer)
 
 	//Quitas las llaves
 	Tokens = Tokens[1 : len(Tokens)-1]
