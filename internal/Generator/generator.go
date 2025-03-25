@@ -57,6 +57,13 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 
 	}
 
+	if showLogs {
+		for _, v := range rawExpresion {
+			fmt.Print(v.Value)
+		}
+		fmt.Println("")
+	}
+
 	// Generate DFA for language recognition
 	automata, numFinalSymbols, err := dfa.NewDFA(rawExpresion, showLogs)
 	if err != nil {
