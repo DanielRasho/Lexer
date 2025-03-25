@@ -20,7 +20,7 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
 
 ```
 // Use "//" for comments
-{ 
+%{ 
     // ======= HEADER =======
     // The entire contents of this section will be COPIED to the BEGINING of the generated Lexer.go file
     
@@ -34,7 +34,7 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
             NUMBER
             COND 
         )
-}
+%}
 {
     // ====== NAMED PATTERNS =======
     // Definition 
@@ -57,22 +57,23 @@ Since YALex initial definition was meant for C, we tweak it a little bit to be e
 // - If there is not return statement, the Lexer wont yield any token when that pattern is matched.
 // - Use "{}" to refer to named patterns defined before
 
-rule entrypoint = 
-    | {LETTER} {return LETTER}      // PRIORITY 0
-    | {DIGIT} {return DIGIT}        // PRIORITY 1
-    | {COND} {return DIGIT}         // PRIORITY 2
-    | ' ' {return WS}               // ...
-    | {LETTER} { return LITERAL }
+%%
+{LETTER} {return LETTER}      // PRIORITY 0
+{DIGIT} {return DIGIT}        // PRIORITY 1
+{COND} {return DIGIT}         // PRIORITY 2
+' ' {return WS}               // ...
+{LETTER} { return LITERAL }
+%%
 
-    // NOTE:
-    // The order in which they are written also defines ITS PRIORITY. 
-    // If the lexer happens to recognize 2 possible actions for a pattern it will take 
-    // the one with HIGHEST PRIORITY (declared first here).
+// NOTE:
+// The order in which they are written also defines ITS PRIORITY. 
+// If the lexer happens to recognize 2 possible actions for a pattern it will take 
+// the one with HIGHEST PRIORITY (declared first here).
 
-{
+%{
     // ======== FOOTER =======
     // The entire contents of this section will be COPIED to the END of the generated Lexer.go file
-}
+%}
 ```
 
 ## The General Pipeline
