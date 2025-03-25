@@ -45,9 +45,9 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 			for e := range len(slice) {
 
 				codigo := strings.TrimSpace(slice[e].Code)
-				fmt.Println(adf.States[i].Id)
-				fmt.Println(codigo)
-				fmt.Println(slice)
+				// fmt.Println(adf.States[i].Id)
+				// fmt.Println(codigo)
+				// fmt.Println(slice)
 
 				if strings.Compare(codigo, "") == 1 {
 					codigo = codigo[1 : len(codigo)-1]
