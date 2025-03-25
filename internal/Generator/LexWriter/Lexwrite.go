@@ -31,9 +31,13 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 
 			fmt.Println(adf.States[i].Actions)
 
-			for e := range len(adf.States[i].Actions) {
-				slice = append(slice[:adf.States[i].Actions[e].Priority],
-					append([]dfa.Action{adf.States[i].Actions[e]}, slice[adf.States[i].Actions[e].Priority:]...)...)
+			for _, action := range adf.States[i].Actions {
+				index := action.Priority
+				if index > len(slice) {
+					index = len(slice)
+				}
+
+				slice = append(slice[:index], append([]dfa.Action{action}, slice[index:]...)...)
 			}
 
 			//Adds the initial action
