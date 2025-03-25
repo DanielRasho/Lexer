@@ -28,6 +28,9 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 		if len(adf.States[i].Actions) > 0 {
 
 			// Sorts by priority so if it finds priority 0 then appends by index 0
+
+			fmt.Println(adf.States[i].Actions)
+
 			for e := range len(adf.States[i].Actions) {
 				slice = append(slice[:adf.States[i].Actions[e].Priority],
 					append([]dfa.Action{adf.States[i].Actions[e]}, slice[adf.States[i].Actions[e].Priority:]...)...)
@@ -42,9 +45,9 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 				codigo := strings.TrimSpace(slice[e].Code)
 				if strings.Compare(codigo, "") == 1 {
 					codigo = codigo[1 : len(codigo)-1]
+					actions = actions + " func() int {" + codigo + "\nreturn SKIP_LEXEME } , \n"
 				}
 
-				actions = actions + " func() int {" + codigo + "\nreturn SKIP_LEXEME } , \n"
 			}
 
 			//Once added actions we can create the state with id state0
