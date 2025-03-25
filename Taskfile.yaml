@@ -19,11 +19,10 @@ tasks:
     desc: Run the Go project with input file and output path
     deps: [build]
     cmds:
-      - ./bin/main -f "{{.INPUTFILE}}" -o ./cmd/Lexer/lexer.go
-      - go build -o bin/LexTest ./cmd/Lexer/main.go 
-      - ./bin/LexText -f "{{.INPUTFILE}}" 
+      - ./bin/main -f "{{.YALEX}}" -o ./cmd/Lexer/lexer.go
+      - go run ./cmd/Lexer/*
     vars:
-      INPUTFILE: "{{.INPUTFILE}}"
+      YALEX: "{{.YALEX}}"
 
   clean:
     desc: Clean the build artifacts

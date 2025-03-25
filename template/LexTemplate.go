@@ -1,8 +1,10 @@
 // package should be specified after file generation
+package main
 
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -88,6 +90,7 @@ func (l *Lexer) GetNextToken() (Token, error) {
 	lexemeBytesSize := 0 // Lenght of current lexeme in bytes.
 
 	for {
+		fmt.Println(currentState.id)
 		// 1. First check if in the current state there are any possible actions
 		if actions := currentState.actions; len(currentState.actions) > 0 {
 			newTokenID := actions[0]() // Get action with higher priority

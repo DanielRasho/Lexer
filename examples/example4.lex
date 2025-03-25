@@ -8,7 +8,7 @@
         ELSE
         WHILE
         RETURN 
-        ASIGN
+        ASSIGN
         PLUS
         MINUS
         MULT
@@ -44,6 +44,8 @@
 "-"       { return MINUS }
 "\*"       { return MULT }
 "/"       { return DIV }
+"\("    { return RPAREN}
+"\)"    { return LPAREN}
 {id}      { return ID }
 {number}  { return NUMBER }
 {ws}      {}

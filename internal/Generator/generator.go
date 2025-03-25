@@ -69,6 +69,8 @@ func Compile(filePath, outputPath string, showLogs bool) error {
 		return err
 	}
 
+	dfa.PrintDFA(automata)
+
 	//Despues de minimize
 	dfa.RemoveAbsortionStates(automata, numFinalSymbols) //Destructive operation
 	dfa.RenderDFA(automata, "./diagram/automataFinal.png")

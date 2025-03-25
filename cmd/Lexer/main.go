@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	lexer, err := NewLexer("./examples/test1.yaa")
+	lexer, err := NewLexer("./examples/test2.yaa")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	for {
+	for i := 0; i < 50; i++ {
 		token, err := lexer.GetNextToken()
 		if err != nil {
 			fmt.Println(err.Error())
