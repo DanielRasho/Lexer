@@ -1,7 +1,6 @@
 package minimize
 
 import (
-	"fmt"
 	"strconv"
 
 	dfa "github.com/DanielRasho/Lexer/internal/DFA"
@@ -64,7 +63,6 @@ func Initialize_Tabla_a_ADF(ADF *dfa.DFA) Table {
 func Crear_Tabla_minimizar(tabla Table) map[string]map[string]bool {
 
 	mapeo := make(map[string]map[string]bool)
-	fmt.Println("tabla:", tabla.Table_2D)
 
 	for key_x := range tabla.X_index - 1 {
 

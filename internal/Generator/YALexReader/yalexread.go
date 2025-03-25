@@ -121,11 +121,17 @@ func Parse(filePath string) (*YALexDefinition, error) {
 		if strings.TrimSpace(Rules[i]) != "" {
 			yal := YALexRule{Pattern: "", Action: ""}
 			Rules[i] = strings.Split(Rules[i], "//")[0]
+			Rules[i] = strings.TrimSpace(Rules[i])
 			//Esta seccion guarda la expresion regexp y la accion que se debe de tomar,
-			key_change := strings.TrimSpace(strings.SplitAfter(Rules[i], "}")[0])
+			key_change := strings.TrimSpace(strings.SplitAfterN(Rules[i], "  ", 2)[0])
 
-			yal.Pattern = hashtokens[key_change]
-			yal.Action = strings.TrimSpace(strings.SplitAfter(Rules[i], "}")[1])
+			pattern, exist := hashtokens[key_change]
+			if !exist {
+				pattern = key_change
+			}
+			yal.Pattern = pattern
+			yal.Action = strings.TrimSpace(strings.SplitAfterN(Rules[i], "  ", 2)[1])
+
 			YalRules = append(YalRules, yal)
 		}
 

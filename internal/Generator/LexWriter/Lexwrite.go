@@ -39,7 +39,9 @@ func CreateLexTemplateComponentes(yal *yalexDef.YALexDefinition, adf *dfa.DFA) L
 			for e := range len(slice) {
 
 				codigo := strings.TrimSpace(slice[e].Code)
-				codigo = codigo[:len(codigo)-1]
+				if strings.Compare(codigo, "") == 1 {
+					codigo = codigo[:len(codigo)-1]
+				}
 
 				actions = actions + " " + codigo + "\nreturn SKIP_LEXEME } , \n"
 			}
