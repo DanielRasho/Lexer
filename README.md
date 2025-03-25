@@ -89,7 +89,7 @@ It turns out that all lexers share many components, **making easy to standarize 
 3. The generator takes those definitions and builds a functional `lexer.go` file
 4. Provide the `lexer.go` a code to tokenize, and fetch the tokens.
 
-![](./pipeline.png)
+![](./pictures/pipeline.png)
 
 ### The componentes of a Lexer
 So before building a generator we first have to understand what we are generating.
@@ -102,9 +102,43 @@ A lexer is basically conformed by 4 parts:
 
 From this components there are only 2 that varies from lexer to lexer: The header & footer, and the automata. It is the Lexer Generator's job to create those and embed them on an `lexer.go` file, everything else lives on the template.
 
-![](./lexerComponents.png)
+![](./pictures/lexerComponents.png)
 
 ### Construction of DFA
+As it had been said before, the automata is ❤️, of the lexer, its the responsable of the most important task in a lexer: **recognizing patterns.** Below, is the actual transformation a regex string suffers to become an actual automata: (implementation in `internal/DFA`).
 
+1. **Extract yalex rules from yalex file:**
 
-## The actual data transformation
+Each rule is composed of a *regex pattern*, and an *action* which is go code that will be executed when the pattern is recognized.
+![](./pictures/1.png)
+
+2. **Raw Symbols translation**
+
+Characters are wrapped into objects. In order to store the action related to this pattern an "special symbol" is introduced (blue symbol) with a unique codification, so that it doesn't it is easy to take them apart from normal symbols, though they are treated as any other symbol.
+![](./pictures/2.png)
+
+3. **Translate to primitive regex operators**
+
+Many regex operators are the composition of more simple operators, in this step they are translated, to make easy the next steps.
+
+![](./pictures/3.png)
+
+4. **Reorder in postfix**
+
+Symbols then are reordered in postfix notation, in this process also regex operators are marked as such (yellow), this is done using the shunting algorithm.
+![](./pictures/4.png)
+
+5. **Abstract syntax tree**
+
+A postfix can be used to create an abstract syntax tree, note that in this step the "action" is still stored through the same node.
+![](./pictures/5.png)
+
+6. **Extract yalex rules**
+
+Using the Direct DFA creation method, a DFA is created, in this step, the actions are stored in all nodes that have a transition to a future step using the "Special symbol" we mentioned earlier. **Whenever during a pattern recognition we enter a state with an action stored, we execute it!**
+![](./pictures/6.png)
+
+7. **Removal**
+
+Automatas usually have an absortion state, they are not necessary for our pattern recognition, so we delete them, they also make the automata diagrams look less convoluted.
+![](./pictures/7.png)
