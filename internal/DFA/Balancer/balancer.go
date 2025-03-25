@@ -4,6 +4,8 @@ Package balancer proporciona una implementación para determinar si una expresi�
 
 package balancer
 
+import "fmt"
+
 /*
 IsBalanced verifica si una expresión está balanceada y registra los pasos del stack.
 
@@ -24,8 +26,19 @@ func IsBalanced(expression string) (bool, []string) {
 		'}': CloseBrace,
 	}
 
+	symbols := make([]rune, 0, len(expression))
 	for _, char := range expression {
+		symbols = append(symbols, char)
+	}
+
+	for i := 0; i < len(symbols); {
+
+		char := symbols[i]
 		switch {
+		case char == '\\':
+			// Skip for scaped sequences
+			i += 2
+			continue
 		case char == OpenParenthesis.Symbol, char == OpenBracket.Symbol, char == OpenBrace.Symbol:
 			// Identificar el carácter de apertura correspondiente.
 			var c *Character
@@ -48,6 +61,8 @@ func IsBalanced(expression string) (bool, []string) {
 			stack = stack[:len(stack)-1]
 			steps = append(steps, "Pop: "+string(char))
 		}
+		fmt.Println("LOOP")
+		i++
 	}
 
 	if len(stack) == 0 {
