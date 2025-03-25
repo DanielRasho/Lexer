@@ -1,6 +1,7 @@
 package yalex_reader
 
 import (
+	"fmt"
 	"strings"
 
 	io "github.com/DanielRasho/Lexer/internal/IO"
@@ -126,9 +127,19 @@ func Parse(filePath string) (*YALexDefinition, error) {
 			key_change := strings.TrimSpace(strings.SplitAfterN(Rules[i], "  ", 2)[0])
 
 			pattern, exist := hashtokens[key_change]
+
 			if !exist {
 				pattern = key_change
+				if strings.Compare(pattern, "\"\"\"") != 0 {
+					pattern = strings.ReplaceAll(pattern, "\"", "")
+				} else {
+					pattern = pattern[1:]
+					pattern = pattern[:len(pattern)-1]
+				}
 			}
+
+			fmt.Println(pattern)
+
 			yal.Pattern = pattern
 			yal.Action = strings.TrimSpace(strings.SplitAfterN(Rules[i], "  ", 2)[1])
 
